@@ -2,7 +2,7 @@
 
 
 @section('content')
-   @if(count($posts) >1)
+  
       <div class="card-body">
             <div class="table-responsive" id="showBlog">
                <ul class="navbar-nav mr-auto align-self-right" >
@@ -38,7 +38,5 @@
             </div>
          </div>
       
-   @else
 
-   @endif
 @endsection

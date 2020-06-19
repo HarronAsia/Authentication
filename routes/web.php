@@ -18,18 +18,21 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'UserController@index')->name('home');
 
 
 Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->middleware('verified');
+Route::get('/home', 'UserController@index')->middleware('verified');
 
-Route::get('/posts', 'PostController@index')->middleware('verified');
+Route::get('/posts', 'PostsController@index')->middleware('verified');
 
 Route::resource('posts', 'PostsController');
 
-Route::get('/user', 'UserController@index')->middleware('verified');
+Route::get('/profile/{id}', 'UserController@index')->middleware('verified');;
 
-Route::resource('user', 'UserController');
+
+
+
+
 
