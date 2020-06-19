@@ -34,7 +34,7 @@
         <header class="main-header">
 
             <!-- Logo -->
-            <a href="#" class="logo">
+            <a href="/home" class="logo">
             
                 <b>Harron</b>
             </a>
@@ -48,6 +48,21 @@
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">
+                            <i class="fas fa-home"></i>&nbsp;Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts">
+                            <i class="fas fa-user-edit"></i>
+                            &nbsp;Posts
+                        </a>
+                    </li>
+
+
                         <!-- User Account Menu -->
                         <li class="dropdown user user-menu">
                             <!-- Menu Toggle Button -->
@@ -71,7 +86,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="/profile" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
@@ -87,6 +102,7 @@
                         </li>
                     </ul>
                 </div>
+            
             </nav>
         </header>
 
