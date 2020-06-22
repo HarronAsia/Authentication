@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-
+        return view('home');
     }
 
     /**
@@ -41,7 +41,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // $user = new User();
+
+        // $user->name = $request->input('name');
+        // if($request->hasFile('photo'))
+        // {
+        //     $file = $request->file('photo');
+            
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = time(). '.' . $extension;
+        //     $path = public_path('img/uploaded/'.$user->name.'/');
+
+        //     $file->move($path,$filename);
+        //     $user->photo = $filename;
+        // }
+        // else
+        // {
+        //     return $request;
+        //     $user->photo = '';
+        // }
+        
+        // $user->save();
+
+        // return view('home')->with('user',$user);
     }
 
     /**
@@ -64,7 +87,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('profiles.edit')->with('user',$user);
     }
 
     /**
@@ -76,7 +100,43 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+         ]);
+
+        $user = User::where('id', '=', $id)->first();
+        $old_photo = $user->photo;
+
+        if($request->hasFile('photo'))
+        {
+            
+            $file = $request->file('photo');
+            
+            $extension = $file->getClientOriginalExtension();
+            $filename =  $user->name. '.' . $extension;
+            //$path = public_path('img/uploaded/'.$user->name.'/');
+            $path = storage_path('app/public/'.$user->name.'/');
+            
+            if( !file_exists($path.$old_photo))
+            {
+                $file->move($path,$filename);
+            }
+            else
+            {
+                unlink($path.$old_photo);
+                 $file->move($path,$filename);
+            }
+            
+        }
+        $data = $request->except(['photo']);
+        
+        $data['photo'] = $filename;
+        
+        $user->update( $data);
+        
+        return view('profiles.profile', compact('user'));
+    
     }
 
     /**
