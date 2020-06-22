@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminPanelsTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateAdminPanelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admin_panels', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->nullable();
-            $table->string('password')->nullable();
+        Schema::create('posts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->mediumText('detail');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateAdminPanelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_panels');
+        Schema::dropIfExists('posts');
     }
 }

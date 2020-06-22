@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Post;
+use Carbon\Carbon;
 
-class UserController extends Controller
+class PostsController extends Controller
 {
+<<<<<<< HEAD:app/Http/Controllers/AdminPanelController.php
 
     public function __construct()
     {
         $this->middleware('auth');
     }
-
+=======
+>>>>>>> parent of bf9220a... new project:app/Http/Controllers/PostsController.php
+    
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-
+      return view('posts.index',['posts'=>$posts=Post::all(),]);
     }
 
     /**
@@ -30,7 +34,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view ('posts.create');
     }
 
     /**
@@ -41,7 +45,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'detail' => 'required',
+        ]);
+        
+        $posts = new Post;
+        $posts->title = $request->input('title');
+        $posts->detail = $request->input('detail');
+        $posts->save();
+
+        return redirect('/posts');
+
     }
 
     /**
@@ -52,8 +67,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return view('profiles.profile')->with('user',$user);
+        $post = Post::findOrFail($id);
+        return view('posts.show')->with('post',$post);
     }
 
     /**
@@ -64,7 +79,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('posts.edit')->with('post',$post);
     }
 
     /**
@@ -76,47 +92,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-<<<<<<< HEAD
         $this->validate($request, [
-            'name' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-         ]);
+            'title' => 'required',
+            'detail' => 'required',
+        ]);
+        
+        $posts = Post::findOrFail($id);
+        $posts->title = $request->input('title');
+        $posts->detail = $request->input('detail');
+        $posts->save();
 
-        $user = User::where('id', '=', $id)->first();
-        $old_photo = $user->photo;
-
-        if($request->hasFile('photo'))
-        {
-            
-            $file = $request->file('photo');
-            
-            $extension = $file->getClientOriginalExtension();
-            $filename =  $user->name. '.' . $extension;
-            //$path = public_path('img/uploaded/'.$user->name.'/');
-            $path = storage_path('app/public/'.$user->name.'/');
-            
-            if( !file_exists($path.$old_photo))
-            {
-                $file->move($path,$filename);
-            }
-            else
-            {
-                unlink($path.$old_photo);
-                 $file->move($path,$filename);
-            }
-            
-        }
-        $data = $request->except(['photo']);
-        
-        $data['photo'] = $filename;
-        
-        $user->update( $data);
-        
-        return view('profiles.profile', compact('user'));
-    
-=======
-        //
->>>>>>> parent of bf9220a... new project
+        return redirect('/posts');
     }
 
     /**
@@ -127,6 +113,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $posts = Post::find($id);
+        $posts->delete();
+        return redirect('/posts');
     }
 }

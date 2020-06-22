@@ -24,7 +24,9 @@ Route::get('/', 'UserController@index')->name('home');
 Auth::routes(['verify' => true]);
 
 
+Route::get('/posts', 'PostsController@index')->middleware('verified');
 
+<<<<<<< HEAD
 Route::get('/profile/{id}', 'UserController@show')->middleware('verified');
 
 Route::get('/profile/edit/{id}', 'UserController@edit')->middleware('verified');
@@ -43,7 +45,11 @@ Route::get('/home', 'EventController@show')->middleware('verified');
 
 
 
+=======
+Route::resource('posts', 'PostsController');
+>>>>>>> parent of bf9220a... new project
 
+Route::get('/profile/{id}', 'UserController@index')->middleware('verified');;
 
 
 
