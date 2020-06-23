@@ -24,7 +24,7 @@ class ContentController extends Controller
      */
     public function create()
     {
-        //
+        return view('events.blogs.addcontent');
     }
 
     /**
@@ -35,7 +35,34 @@ class ContentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'detail' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $contents = new Content();
+        dd( $contents);
+        $contents->detail = $request->input('detail');
+
+        if ($request->hasFile('photo')) {
+
+            $contents->photo = $request->file('photo');
+            $extension =  $contents->photo->getClientOriginalExtension();
+
+            $filename =  $contents->title . '.' . $extension;
+
+            $path = storage_path('app/public/event/' . $contents->title . '/');
+
+
+            $contents->photo->move($path , $filename);
+        }
+        $data = $request->except(['photo']);
+ 
+        $data['photo'] = $filename;
+        
+        $contents->event()->associate($request->event());
+        $contents->create($data);
+        //dd($events->save( $data));
+        return redirect('/content/{id}');
     }
 
     /**

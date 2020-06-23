@@ -35,9 +35,9 @@
                         @foreach ($events as $event)
                         <td>{{$event->id}}</td>
                         <td>
-                            <div class="w3-border w3-padding">
-                                <img src="{{asset('storage/event/'.$event->title.'/'.$event->photo.'/')}}" alt="Image" style="width:200px ;height:200px;" >
-                            </div>
+                            <a href="/content/{{$event->id}}">
+                                <img src="{{asset('storage/event/'.$event->title.'/'.$event->photo.'/')}}" alt="Image" style="width:200px ;height:200px;">
+                            </a>
                         </td>
                         <td>{{$event->title}}</td>
                         <td>{{$event->created_at}}</td>

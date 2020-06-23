@@ -166,7 +166,7 @@ return [
 
         'tests'         => true,
 
-        'datatables'    => true,
+        'datatables'    => false,
 
         'menu'          => [
 

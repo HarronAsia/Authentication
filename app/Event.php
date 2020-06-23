@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-
+use App\Content;
 class Event extends Model
 {
     use Notifiable;
@@ -17,4 +17,9 @@ class Event extends Model
     protected $fillable = [
         'title', 'photo',
     ];
+
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
 }

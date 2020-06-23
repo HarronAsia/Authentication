@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use Illuminate\Http\Request;
-use DataTable;
+
+
 class EventController extends Controller
 {
 
@@ -20,7 +21,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $events = Event::all();
+
+        return view('home')->with('events', $events);
     }
 
     /**
@@ -42,16 +45,12 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required',
+            'detail' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $events = new Event();
 
-
         $events->title = $request->input('title');
-
-
-
 
         if ($request->hasFile('photo')) {
 
@@ -63,10 +62,10 @@ class EventController extends Controller
             $path = storage_path('app/public/event/' . $events->title . '/');
 
 
-            $events->photo->move($path , $filename);
+            $events->photo->move($path, $filename);
         }
         $data = $request->except(['photo']);
-        
+
         $data['photo'] = $filename;
         //dd( $data);
         $events->create($data);
@@ -80,11 +79,10 @@ class EventController extends Controller
      * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $events = Event::all();
-
-        return view('home')->with('events', $events);
+        $event = Event::findOrFail($id);
+        return view('events.blogs.index')->with('event', $event);
     }
 
     /**

@@ -24,7 +24,7 @@ Route::get('/verify', 'Auth\RegisterController@verifyUser');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/home', 'EventController@show')->middleware('verified');
+Route::get('/home', 'EventController@index')->middleware('verified');
 
 
 Route::get('/profile/{id}', 'UserController@index')->middleware('verified');;
@@ -38,6 +38,12 @@ Route::post('/profile/update/{id}', 'UserController@update')->middleware('verifi
 Route::get('/event/add', 'EventController@create')->middleware('verified');
 
 Route::post('/event/create', 'EventController@store')->middleware('verified');
+
+Route::get('/content/{id}', 'EventController@show')->middleware('verified');
+
+Route::get('/content/{id}/add', 'ContentController@create')->middleware('verified');
+
+Route::post('/content/{id}/store', 'ContentController@store')->middleware('verified');
 
 
 
