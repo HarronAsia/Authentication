@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="container">
     <div class="row">
 
@@ -14,7 +15,7 @@
     <div class="card border-primary">
         <h5 class="card-header bg-primary d-flex justify-content-between">
             <hr>
-          
+
         </h5>
 
         <div class="card-body">
@@ -31,15 +32,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($event as $content)
-                        <td>{{$content->id}}</td>
+                        @foreach ($events as $event)
+                        <td>{{$event->id}}</td>
                         <td>
-                            <img src="{{asset('img/uploaded/event/'.$content->title.'/'.$content->photo)}}" alt="Image" style="width:200px ;height:200px;">
+                            <div class="w3-border w3-padding">
+                                <img src="{{asset('storage/event/'.$event->title.'/'.$event->photo.'/')}}" alt="Image" style="width:200px ;height:200px;" >
+                            </div>
                         </td>
-                        <td>{{$content->title}}</td>      
-                        <td>{{$content->created_at}}</td>    
-                        <td>{{$content->updated_at}}</td>  
-                        <td>1</td>                 
+                        <td>{{$event->title}}</td>
+                        <td>{{$event->created_at}}</td>
+                        <td>{{$event->updated_at}}</td>
+                        <td></td>
                         </tr>
                         @endforeach
                     </tbody>

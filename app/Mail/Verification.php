@@ -16,9 +16,9 @@ class Verification extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->email_dataa = $data;
     }
 
     /**
@@ -28,6 +28,6 @@ class Verification extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->from(env('MAIL_USERNAME'),'Harron the Intern')->subject("Welcome to my website")->view('mail.email_verification', ['email_data' => $this->email_data]);
     }
 }

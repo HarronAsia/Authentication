@@ -16,8 +16,11 @@
 
                     <div class="card-header bg-primary text-light text-center lead">
                     YOUR PROFILE IMAGE|| <br>
-                    <img src="{{storage_path('app/public/'.$user->name.'/'.$user->photo)}}" alt="Image" style="width:200px ;height:200px;">
-               
+                    @if ($user->photo == NULL)
+                    <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
+                    @else
+                    <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="width:200px ;height:200px;">
+                    @endif
                     </div>
 
                     <div class="card-body">

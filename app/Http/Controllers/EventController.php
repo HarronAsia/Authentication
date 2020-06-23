@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use Illuminate\Http\Request;
-
+use DataTable;
 class EventController extends Controller
 {
 
@@ -43,62 +43,57 @@ class EventController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            //'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        $event = new Event();
-        /*    
-        if ($request->hasFile('photo')) {
+        $events = new Event();
 
-            $file = $request->file('photo');
 
-            $extension = $file->getClientOriginalExtension();
-            $filename =  $event->name . '.' . $extension;
-            $path = public_path('img/uploaded/event/' . $event->name . '/');
+        $events->title = $request->input('title');
 
-            $file->move($path, $filename);
-        }
-        $data = $request->except(['photo']);
-        $data['photo'] = $filename;
-*/
 
-        $event->title = $request->input('title');
+
 
         if ($request->hasFile('photo')) {
 
-            $file = $request->file('photo');
+            $events->photo = $request->file('photo');
+            $extension =  $events->photo->getClientOriginalExtension();
 
-            $extension = $file->getClientOriginalExtension();
-            $filename =  $event->name . '.' . $extension;
-            $path = public_path('img/uploaded/event/' . $event->title . '/');
+            $filename =  $events->title . '.' . $extension;
 
-            $file->move($path, $filename);
+            $path = storage_path('app/public/event/' . $events->title . '/');
+
+
+            $events->photo->move($path , $filename);
         }
         $data = $request->except(['photo']);
+        
         $data['photo'] = $filename;
-
-        $event->save();
+        //dd( $data);
+        $events->create($data);
+        //dd($events->save( $data));
         return redirect('/home');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Event  $event
+     * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
     public function show()
     {
-        $event = Event::all();
-        return view('home')->with('event',$event);
+        $events = Event::all();
+
+        return view('home')->with('events', $events);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Event  $event
+     * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
+    public function edit(Event $events)
     {
         //
     }
@@ -107,10 +102,10 @@ class EventController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Event  $event
+     * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, Event $events)
     {
         //
     }
@@ -118,10 +113,10 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Event  $event
+     * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy(Event $events)
     {
         //
     }

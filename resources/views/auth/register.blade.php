@@ -32,6 +32,16 @@
         <b>Harron the Intern </b>Register Page
     </div>
 
+    <div class="flash-message">
+        @foreach(['warming','info','success','danger'] as $msg)
+            @if(Session::has('alert-'.$msg))
+                <p class="alert alert-{{$msg}}">
+                    {{Session::get('alert-'.$msg)}}
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                </p>
+            @endif
+        @endforeach
+    </div>
     <div class="register-box-body">
         <p class="login-box-msg">Create your new account here</p>
 

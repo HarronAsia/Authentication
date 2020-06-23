@@ -20,6 +20,7 @@ Auth::routes();
 
 Route::get('/', 'UserController@index')->name('home');
 
+Route::get('/verify', 'Auth\RegisterController@verifyUser');
 
 Auth::routes(['verify' => true]);
 
@@ -36,7 +37,8 @@ Route::post('/profile/update/{id}', 'UserController@update')->middleware('verifi
 
 Route::get('/event/add', 'EventController@create')->middleware('verified');
 
-Route::post('/event/update', 'EventController@store')->middleware('verified');
+Route::post('/event/create', 'EventController@store')->middleware('verified');
+
 
 
 

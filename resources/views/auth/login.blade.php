@@ -31,6 +31,17 @@
        <b>Harron the Intern </b>Login Page
     </div>
 
+    <div class="flash-message">
+        @foreach(['warming','info','success','danger'] as $msg)
+            @if(Session::has('alert-'.$msg))
+                <p class="alert alert-{{$msg}}">
+                    {{Session::get('alert-'.$msg)}}
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                </p>
+            @endif
+        @endforeach
+    </div>
+    
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Login to your Website</p>

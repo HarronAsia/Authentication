@@ -54,6 +54,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         return view('profiles.profile')->with('user',$user);
+        
     }
 
     /**
@@ -93,7 +94,6 @@ class UserController extends Controller
             
             $extension = $file->getClientOriginalExtension();
             $filename =  $user->name. '.' . $extension;
-            //$path = public_path('img/uploaded/'.$user->name.'/');
             $path = storage_path('app/public/'.$user->name.'/');
             
             if( !file_exists($path.$old_photo))
@@ -103,12 +103,11 @@ class UserController extends Controller
             else
             {
                 unlink($path.$old_photo);
-                 $file->move($path,$filename);
+                $file->move($path,$filename);
             }
             
         }
         $data = $request->except(['photo']);
-        
         $data['photo'] = $filename;
         
         $user->update( $data);

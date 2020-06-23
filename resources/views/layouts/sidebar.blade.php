@@ -6,47 +6,43 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{asset('img/default.jpg')}}" class="img-circle"
-                     alt="User Image"/>
+                @if (Auth::user()->photo == NULL)
+                <img src="{{asset('storage/default.png')}}" alt="Image" class="user-image">
+                @else
+                <img src="{{asset('storage/'.Auth::user()->name.'/'.Auth::user()->photo.'/')}}" alt="Image" class="user-image">
+                @endif
+
             </div>
             <div class="pull-left info">
                 @if (Auth::guest())
                 <p>Annynomous</p>
                 @else
-                    <p>{{ Auth::user()->name}}</p>
+                <p>{{ Auth::user()->name}}</p>
                 @endif
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-               
+
             </div>
-            
+
         </div>
         <div class="user-panel">
-            
-                @if (Auth::guest())
-                <p>Annynomous</p>
-                @else
-                    <p>{{ Auth::user()->name}}</p>
-                @endif
-                <!-- Status -->
-                <a href="/home"><i class="fa fa-circle text-info"></i> Home</a>
-               
-            
-            
+
+
+            <!-- Status -->
+            <a href="/home"><i class="fa fa-circle text-info"></i> Home</a>
+
+
+
         </div>
 
         <div class="user-panel">
-            
-                @if (Auth::guest())
-                <p>Annynomous</p>
-                @else
-                    <p>{{ Auth::user()->name}}</p>
-                @endif
-                <!-- Status -->
-                <a href="/event/add"><i class="fa fa-circle text-info"></i> Event</a>
-               
-            
-            
+
+
+            <!-- Status -->
+            <a href="/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+
+
+
         </div>
 
         <!-- Sidebar Menu -->

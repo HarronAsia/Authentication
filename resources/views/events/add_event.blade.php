@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="/event/update" method="POST" class="px-3" enctype="multipart/form-data">
+                        <form action="/event/create" method="POST" class="px-3" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
                                 <input type="text" name="title" class="form-control form-control-lg" placeholder="Enter Title" required>
@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="submit" name="addevent" class="form-control form-control-lg" value="Add Event" class="btn btn-success btn-block btn-lg">
+                                <input type="submit" class="form-control form-control-lg"  class="btn btn-success btn-block btn-lg">
                             </div>
                         </form>
                     </div>
