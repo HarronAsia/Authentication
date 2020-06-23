@@ -64,7 +64,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('profiles.edit')->with('user',$user);
     }
 
     /**
@@ -76,7 +77,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-<<<<<<< HEAD
+
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -114,9 +115,6 @@ class UserController extends Controller
         
         return view('profiles.profile', compact('user'));
     
-=======
-        //
->>>>>>> parent of bf9220a... new project
     }
 
     /**

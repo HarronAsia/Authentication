@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row">
-<<<<<<< HEAD
+
         <div class="col-lg-12">
 
             <h4 class="text-center text-primary mt-2"> Share your events </h4>
@@ -48,10 +48,7 @@
             </div>
         </div>
 
-=======
-        
-    
->>>>>>> parent of bf9220a... new project
+
     </div>
 </div>
 @endsection
