@@ -173,7 +173,7 @@ class EventController extends Controller
     {
         $events = Event::findOrFail($id);
         $events->delete();
-        return redirect('/');
+        return redirect('/index');
     }
 
     public function join($id)

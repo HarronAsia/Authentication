@@ -1,5 +1,5 @@
 <aside class="main-sidebar" id="sidebar-wrapper">
-
+{{Auth::user()->role}}
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
@@ -25,24 +25,20 @@
             </div>
 
         </div>
+        
         <div class="user-panel">
-
-
             <!-- Status -->
-            <a href="/home"><i class="fa fa-circle text-info"></i> Home</a>
-
-
-
+            <a href="/"><i class="fa fa-circle text-info"></i> Home</a>
         </div>
 
         <div class="user-panel">
-
-
+            @if (Auth::user()->role == "manager")
             <!-- Status -->
-            <a href="/event/add"><i class="fa fa-circle text-info"></i> Event</a>
-
-
-
+            <a href="/{{Auth::user()->role}}/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            @elif (Auth::user()->role == "admin")
+            <!-- Status -->
+            <a href="/{{Auth::user()->role}}/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            @endif
         </div>
 
         <!-- Sidebar Menu -->

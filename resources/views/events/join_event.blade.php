@@ -31,7 +31,7 @@
 
     <div class="row">
         <!-- Profile Page -->
-        <form action="/event/{{$event->id}}/participate " method="POST" enctype="multipart/form-data">
+        <form action="/manager/event/{{$event->id}}/participate " method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">

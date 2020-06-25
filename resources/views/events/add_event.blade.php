@@ -14,7 +14,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="/event/create" method="POST" class="px-3" enctype="multipart/form-data">
+                        <form action="/manager/event/create" method="POST" class="px-3" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <input type="text" name="title" class="form-control form-control-lg" placeholder="Enter Title" required>

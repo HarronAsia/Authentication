@@ -48,7 +48,7 @@
                         <td>
                         @if( Auth::user()->id == $event->user_id)
                             <div class="pull-left">
-                                <a href="/event/{{$event->id}}/edit">
+                                <a href="/manager/event/{{$event->id}}/edit">
                                     <button type="button" class="btn btn-info btn-lg">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -56,7 +56,7 @@
                             </div>
 
                             <div class="pull-right">
-                                <a href="/event/{{$event->id}}/delete">
+                                <a href="/manager/event/{{$event->id}}/delete">
                                     <button type="button" class="btn btn-danger btn-lg">
                                         <i class="fa fa-trash"></i>
                                     </button>

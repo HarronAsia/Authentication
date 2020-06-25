@@ -37,6 +37,14 @@
                         </p>
 
                         <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                            <b> Day Of Birth : </b> {{$user->dob}}
+                        </p>
+
+                        <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                            <b> Phone Number : </b> {{$user->number}}
+                        </p>
+
+                        <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
                             <b> Created On : </b> {{$user->created_at}}
                         </p>
 

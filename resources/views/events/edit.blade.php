@@ -5,7 +5,7 @@
     <div class="row">
         <!-- Edit Event Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-        <form action="/event/{{$event->id}}/update " method="POST" enctype="multipart/form-data">
+        <form action="/manager/event/{{$event->id}}/update " method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">

@@ -34,7 +34,7 @@
             <p>Posted on {{$event->created_at}}</p>
 
             <hr>
-            <a href="/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
+            <a href="/manager/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
             <!-- Event Image -->
             <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image">
 
