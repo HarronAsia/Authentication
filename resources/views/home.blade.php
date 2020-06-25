@@ -26,6 +26,7 @@
                             <th>No.</th>
                             <th>Banner</th>
                             <th>Title</th>
+                            <th>Detail</th>
                             <th>Date</th>
                             <th>Last Updated</th>
                             <th>Actions</th>
@@ -36,13 +37,33 @@
                         <td>{{$event->id}}</td>
                         <td>
                             <a href="/content/{{$event->id}}">
-                                <img src="{{asset('storage/event/'.$event->title.'/'.$event->photo.'/')}}" alt="Image" style="width:200px ;height:200px;">
+                                <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image" style="width:200px ;height:200px;">
                             </a>
                         </td>
+
                         <td>{{$event->title}}</td>
+                        <td>{{$event->detail}}</td>
                         <td>{{$event->created_at}}</td>
                         <td>{{$event->updated_at}}</td>
-                        <td></td>
+                        <td>
+                        @if( Auth::user()->id == $event->user_id)
+                            <div class="pull-left">
+                                <a href="/event/{{$event->id}}/edit">
+                                    <button type="button" class="btn btn-info btn-lg">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </a>
+                            </div>
+
+                            <div class="pull-right">
+                                <a href="/event/{{$event->id}}/delete">
+                                    <button type="button" class="btn btn-danger btn-lg">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </a>
+                            </div>
+                         @endif
+                        </td>
                         </tr>
                         @endforeach
                     </tbody>

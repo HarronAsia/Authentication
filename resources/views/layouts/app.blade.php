@@ -37,7 +37,7 @@
         <header class="main-header">
 
             <!-- Logo -->
-            <a href="/home" class="logo">
+            <a href="/" class="logo">
 
                 <b>Harron</b>
             </a>
@@ -139,7 +139,7 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -177,6 +177,9 @@
 
     <!-- Datatable  -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.js"></script>
+
+
+
     @stack('scripts')
 </body>
 

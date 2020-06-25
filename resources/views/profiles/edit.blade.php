@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <!-- Profile Page -->
-        <a href="/profile/{{Auth::user()->id}}" class="btn btn-default">Go Back</a>
+        <a href="javascript:history.back()" class="btn btn-primary">Back</a>
         <form action="/profile/update/{{Auth::user()->id}} " method="POST" enctype="multipart/form-data">
         @csrf
 

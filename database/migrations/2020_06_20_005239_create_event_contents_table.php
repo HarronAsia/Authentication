@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContentsTable extends Migration
+class CreateEventContentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,13 @@ class CreateContentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contents', function (Blueprint $table) {
-            $table->id();
-
+        Schema::create('event_contents', function (Blueprint $table) {
             $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('content_id');
 
-            $table->string('sub_title')->nullable();
-            $table->string('sub_detail')->nullable();
-            $table->string('sub_photo')->nullable();
-            
- 
             $table->timestamps();
-
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-
+            $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
         });
     }
 
@@ -37,6 +30,6 @@ class CreateContentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contents');
+        Schema::dropIfExists('event_contents');
     }
 }

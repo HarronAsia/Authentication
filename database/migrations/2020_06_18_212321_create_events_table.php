@@ -15,10 +15,17 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->unsignedTinyInteger('status')->nullable();
-            $table->string('photo')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+
+            $table->string('title')->unique();
+            $table->string('detail')->unique();
+
+
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            
         });
     }
 
@@ -29,6 +36,7 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('events');
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Content;
+use App\User;
 use App\Event;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -21,9 +23,10 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
 
-        return view('home')->with('events', $events);
+        $events = Event::all();
+ 
+        return view('home',compact('events'));
     }
 
     /**
@@ -33,7 +36,9 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events.add_event');
+        
+        $events = Event::all();
+        return view('events.add_event', compact('events'));
     }
 
     /**
@@ -44,33 +49,41 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+   
+        $data = $request->validate( [
+            'title' => 'required',
             'detail' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        $data['user_id'] = Auth::user()->id;
         $events = new Event();
+        $events->user_id =   $data['user_id'];
 
-        $events->title = $request->input('title');
-
-        if ($request->hasFile('photo')) {
-
-            $events->photo = $request->file('photo');
-            $extension =  $events->photo->getClientOriginalExtension();
+        $events->title = $data['title'];
+        $events->detail = $data['detail'];
+        
+        if ($request->hasFile('thumbnail')) {
+            
+            $events->thumbnail = $request->file('thumbnail');
+            
+            $extension =  $events->thumbnail->getClientOriginalExtension();
 
             $filename =  $events->title . '.' . $extension;
 
             $path = storage_path('app/public/event/' . $events->title . '/');
 
 
-            $events->photo->move($path, $filename);
+            $events->thumbnail->move($path, $filename);
         }
-        $data = $request->except(['photo']);
-
-        $data['photo'] = $filename;
+        $data = $request->except(['thumbnail']);
+        
+        $data['thumbnail'] = $filename;
+        $events->thumbnail = $data['thumbnail'];
         //dd( $data);
-        $events->create($data);
+        $events->save();
+
         //dd($events->save( $data));
-        return redirect('/home');
+        return redirect('/');
     }
 
     /**
@@ -81,8 +94,10 @@ class EventController extends Controller
      */
     public function show($id)
     {
+        $user = User::findOrFail($id);
+        $contents = Content::all();
         $event = Event::findOrFail($id);
-        return view('events.blogs.index')->with('event', $event);
+        return view('events.blogs.index',compact('event','user','contents'));
     }
 
     /**
@@ -91,9 +106,10 @@ class EventController extends Controller
      * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $events)
+    public function edit($id)
     {
-        //
+        $events = Event::findOrFail($id);
+        return view('events.edit')->with('event', $events);
     }
 
     /**
@@ -103,9 +119,48 @@ class EventController extends Controller
      * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $events)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required',
+            'detail' => 'required',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        
+
+        $events = Event::where('id', '=', $id)->first(); 
+        $user = Event::where('id', '=', $events->user_id)->first();
+        $data['user_id'] =  $user->id;
+        $old_thumbnail = $events->thumbnail;
+        if($request->hasFile('thumbnail'))
+        {
+            
+            $events->thumbnail = $request->file('thumbnail');
+            
+            $extension = $events->thumbnail->getClientOriginalExtension();
+            $filename =  $events->title. '.' . $extension;
+            
+            $path = storage_path('app/public/event/'.$events->title.'/');
+            
+            if( !file_exists($path.$old_thumbnail))
+            {
+                
+                $events->thumbnail->move($path,$filename);
+            }
+            else
+            {
+                
+                unlink($path.$old_thumbnail);
+                $events->thumbnail->move($path,$filename);
+            }
+            
+        }
+
+        $data['thumbnail'] = $filename;
+        
+        $events->update($data);
+        
+        return redirect('/');
     }
 
     /**
@@ -114,8 +169,17 @@ class EventController extends Controller
      * @param  \App\Event  $events
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $events)
+    public function destroy($id)
     {
-        //
+        $events = Event::findOrFail($id);
+        $events->delete();
+        return redirect('/');
+    }
+
+    public function join($id)
+    {
+        $users = User::all();
+        $event = Event::findOrFail($id);
+        return view('events.join_event',compact('users','event'));
     }
 }

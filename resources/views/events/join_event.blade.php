@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <a href="javascript:history.back()" class="btn btn-primary">Back</a>
 <div class="container">
     <div class="row">
@@ -10,23 +11,6 @@
             <!-- Title -->
             <h1 class="mt-4">{{$event->title}}</h1>
 
-            <!-- Author -->
-
-
-            @if( Auth::user()->id == $event->user_id)
-            <p class="lead">
-                by
-                <h2>{{$user->name}}</h2>
-
-            </p>
-            @else
-            <p class="lead">
-                by
-                <a href="/profile/{{$event->user_id}}">{{$user->name}}</a>
-
-            </p>
-            @endif
-
 
             <hr>
 
@@ -34,7 +18,6 @@
             <p>Posted on {{$event->created_at}}</p>
 
             <hr>
-            <a href="/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
             <!-- Event Image -->
             <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image">
 
@@ -43,14 +26,38 @@
             <!-- Event Detail -->
             <p class="lead">{{$event->detail}}</p>
 
-            <!-- Add Content -->
-            <a href="/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
-
         </div>
-
     </div>
-    <!-- /.row -->
-    
+
+    <div class="row">
+        <!-- Profile Page -->
+        <form action="/event/{{$event->id}}/participate " method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <div class="form-group">
+                <label for="photo">Your Image</label>
+                @if (Auth::user()->photo == NULL)
+                <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
+                @else
+                <img src="{{asset('storage/'.Auth::user()->name.'/'.Auth::user()->photo)}}" alt="Image" style="width:200px ;height:200px;">
+                @endif
+            </div>
+
+            <div class="form-group">
+                <label for="name">Your name</label>
+                <input class="form-control" name="name" placeholder="Enter Your Name" value={{ Auth::user()->name }}>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Your Email</label>
+                <input class="form-control" name="name" placeholder="Enter Your Name" value={{ Auth::user()->email }}>
+            </div>
+
+            <button type="submit" class="btn btn-success">Join Event</button>
+        </form>
+        <!-- Profile Page -->
+    </div>
+
     <div class="row">
         <div class="card-body">
             <div class="table-responsive" id="showBlog">
@@ -59,26 +66,26 @@
                         <tr>
                             <th>No.</th>
                             <th>Photo</th>
-                            <th>Title</th>
-                            <th>Detail</th>
-                            <th>Date</th>
-                            <th>Last Updated</th>
-                            <th>Actions</th>
+                            <th>Name</th>
+                            <th>Email</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($contents as $content)
-                        <td>{{$content->id}}</td>
+                        @foreach ($users as $user)
+                        <td>{{$user->id}}</td>
                         <td>
-                            <img src="{{asset('storage/event/'.$event->title.'/content'.'/'.$content->sub_title.'/'.$content->sub_photo.'/')}}" alt="Image" style="width:200px ;height:200px;">
+                            @if ($user->photo == NULL)
+                            <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
+                            @else
+                            <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="width:200px ;height:200px;">
+                            @endif
                         </td>
-                        <td>{{$content->sub_title}}</td>
-                        <td>{{$content->sub_detail}}</td>
-                        <td>{{$content->created_at}}</td>
-                        <td>{{$content->updated_at}}</td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->email}}</td>
+
                         <td>
                             <div class="pull-left">
-                                <a href="/content/{{$content->id}}/edit">
+                                <a href="#">
                                     <button type="button" class="btn btn-info btn-lg">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -86,7 +93,7 @@
                             </div>
 
                             <div class="pull-left">
-                                <a href="/content/{{$content->id}}/delete">
+                                <a href="#">
                                     <button type="button" class="btn btn-danger btn-lg">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -103,4 +110,5 @@
         </div>
     </div>
 </div>
+
 @endsection

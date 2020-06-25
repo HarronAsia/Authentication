@@ -3,11 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Event;
+
 class Content extends Model
 {
-    public function event()
+    protected $fillable = [
+        'sub_title','sub_detail','sub_photo','event_id',
+    ];
+
+    public function events()
     {
-        return $this->belongsTo(Event::class, 'event_id','id');
+        return $this->belongsToMany(Event::class,'event_contents');
     }
+
 }
