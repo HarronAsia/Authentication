@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <!-- Profile Page -->
         <div class="tab-pane container active" id="profile">

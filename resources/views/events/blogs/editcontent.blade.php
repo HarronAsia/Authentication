@@ -6,7 +6,11 @@
     <div class="row">
         <!-- Edit Event Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-        <form action="/content/{{$content->id}}/update" method="POST" enctype="multipart/form-data">
+        @if(Auth::user()->role == "manager")
+        <form action="/manager/content/{{$content->id}}/update" method="POST" enctype="multipart/form-data">
+        @else
+        <form action="/admin/content/{{$content->id}}/update" method="POST" enctype="multipart/form-data">
+        @endif
             @csrf
 
             <div class="form-group">

@@ -18,10 +18,13 @@ class Event extends Model
         'title','detail', 'thumbnail','user_id',
     ];
 
-    public function user()
+    public function users()
     {
         return $this->belongsToMany(User::class,'user_events');
     }
 
-
+    public function contents()
+    {
+        return $this->hasMany(Content::class,'event_contents');
+    }
 }

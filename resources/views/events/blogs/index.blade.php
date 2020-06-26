@@ -32,9 +32,19 @@
 
             <!-- Date/Time -->
             <p>Posted on {{$event->created_at}}</p>
-
+                
             <hr>
-            <a href="/manager/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
+            @if (Auth::user()->role == "member")
+
+            @else
+                @if (Auth::user()->role == "manager")
+                <a href="/manager/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
+                @else
+                <a href="/admin/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
+                @endif
+            @endif
+
+
             <!-- Event Image -->
             <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image">
 
@@ -43,14 +53,31 @@
             <!-- Event Detail -->
             <p class="lead">{{$event->detail}}</p>
 
-            <!-- Add Content -->
-            <a href="/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
+            @if (Auth::user()->role == "member")
+
+            @else
+                
+               
+
+                    @if (Auth::user()->role == "manager")
+                        @if( Auth::user()->id == $event->user_id)
+                        <!-- Add Content -->
+                        <a href="/manager/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
+                        @else
+                        
+                        @endif
+                    @else
+                    <a href="/admin/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
+                    @endif
+
+               
+            @endif
 
         </div>
 
     </div>
     <!-- /.row -->
-    
+
     <div class="row">
         <div class="card-body">
             <div class="table-responsive" id="showBlog">
@@ -77,8 +104,13 @@
                         <td>{{$content->created_at}}</td>
                         <td>{{$content->updated_at}}</td>
                         <td>
+                        @if (Auth::user()->role == "member")
+
+                        @elseif (Auth::user()->role == "manager")
+
+                            @if(Auth::user()->id == $event->user_id)
                             <div class="pull-left">
-                                <a href="/content/{{$content->id}}/edit">
+                                <a href="/manager/content/{{$content->id}}/edit">
                                     <button type="button" class="btn btn-info btn-lg">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -86,13 +118,33 @@
                             </div>
 
                             <div class="pull-left">
-                                <a href="/content/{{$content->id}}/delete">
+                                <a href="/manager/content/{{$content->id}}/delete">
+                                    <button type="button" class="btn btn-danger btn-lg">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </a>
+                            </div>
+                            @else
+
+                            @endif
+                        @else
+                            <div class="pull-left">
+                                <a href="/admin/content/{{$content->id}}/edit">
+                                    <button type="button" class="btn btn-info btn-lg">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </a>
+                            </div>
+
+                            <div class="pull-left">
+                                <a href="/admin/content/{{$content->id}}/delete">
                                     <button type="button" class="btn btn-danger btn-lg">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </a>
                             </div>
 
+                        @endif
                         </td>
                         </tr>
                         @endforeach

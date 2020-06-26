@@ -40,51 +40,58 @@ Route::get('/profile/edit/{id}', 'UserController@edit')->middleware('verified')-
 Route::post('/profile/update/{id}', 'UserController@update')->middleware('verified')->name('profileupdate');
 
 
-
 //--------Profile------------------------//
 
+//--------For MANAGER-------------------------------------------------------------------------------------------------//
 Route::group([
-    'prefix' => 'manager',
+    'prefix' => 'manager/event',
     'middleware' => 'App\Http\Middleware\ManagerMiddleware'
 ], function () {
 
+    
 
     //--------Event------------------------//
 
-    Route::get('/event/add', 'EventController@create')->middleware('verified')->name('eventadd');
+    Route::get('/add', 'EventController@create')->middleware('verified')->name('eventadd');
 
-    Route::post('/event/create', 'EventController@store')->middleware('verified')->name('eventcreate');
+    Route::post('/create', 'EventController@store')->middleware('verified')->name('eventcreate');
 
-    Route::get('/event/{id}/edit', 'EventController@edit')->middleware('verified')->name('eventedit');
+    Route::get('/{id}/edit', 'EventController@edit')->middleware('verified')->name('eventedit');
 
-    Route::post('/event/{id}/update', 'EventController@update')->middleware('verified')->name('eventupdate');
+    Route::post('/{id}/update', 'EventController@update')->middleware('verified')->name('eventupdate');
 
-    Route::get('/event/{id}/delete', 'EventController@destroy')->middleware('verified')->name('eventdelete');
+    Route::get('/{id}/delete', 'EventController@destroy')->middleware('verified')->name('eventdelete');
 
-    Route::get('/event/{id}/join', 'EventController@join')->middleware('verified')->name('eventjoin');
+    Route::get('/{id}/join', 'EventController@join')->middleware('verified')->name('eventjoin');
 
-    Route::post('/event/{id}/participate', 'EventController@participate')->middleware('verified')->name('eventparticipate');
+    Route::post('/{id}/participate', 'EventController@participate')->middleware('verified')->name('eventparticipate');
 
     //--------Event------------------------//
+});
 
-
-
+Route::group([
+    'prefix' => 'manager/content',
+    'middleware' => 'App\Http\Middleware\ManagerMiddleware'
+], function () {
     //--------Content------------------------//
 
-    Route::get('/content/{id}/add', 'ContentController@create')->middleware('verified');
+    Route::get('/{id}/add', 'ContentController@create')->middleware('verified');
 
-    Route::post('/content/{id}/store', 'ContentController@store')->middleware('verified');
+    Route::post('/{id}/store', 'ContentController@store')->middleware('verified');
 
-    Route::get('/content/{id}/edit', 'ContentController@edit')->middleware('verified');
+    Route::get('/{id}/edit', 'ContentController@edit')->middleware('verified');
 
-    Route::post('/content/{id}/update', 'ContentController@update')->middleware('verified');
+    Route::post('/{id}/update', 'ContentController@update')->middleware('verified');
 
-    Route::get('/content/{id}/delete', 'ContentController@destroy')->middleware('verified');
+    Route::get('/{id}/delete', 'ContentController@destroy')->middleware('verified');
 
     //--------Content------------------------//
 
 });
+//--------For MANAGER-------------------------------------------------------------------------------------------------//
 
+
+//--------For ADMIN-------------------------------------------------------------------------------------------------//
 Route::group([
     'prefix' => 'admin/event',
     'middleware' => 'App\Http\Middleware\AdminMiddleware'
@@ -105,6 +112,7 @@ Route::group([
     Route::post('/{id}/participate', 'EventController@participate')->middleware('verified')->name('eventparticipate');
     //--------Event------------------------//
 });
+
 Route::group([
     'prefix' => 'admin/content',
     'middleware' => 'App\Http\Middleware\AdminMiddleware'
@@ -123,8 +131,44 @@ Route::group([
 
     //--------Content------------------------//
 
-
 });
 
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => 'App\Http\Middleware\AdminMiddleware'
+], function () {
+    
+    Route::get('/dashboard', 'AdminPanelController@index')->middleware('verified');
+
+    //--------Managing Users------------------------//
+    Route::get('/users/lists', 'AdminPanelController@users')->middleware('verified');
+    Route::get('/users/{id}/edit', 'AdminPanelController@editusers')->middleware('verified');
+    Route::post('/users/{id}/update', 'AdminPanelController@updateusers')->middleware('verified');
+    Route::get('/users/{id}/delete', 'AdminPanelController@destroyusers')->middleware('verified');
+    Route::post('/users/export', 'UserController@export')->middleware('verified');
+    //--------Managing Users------------------------//
+
+    //--------Managing Managers------------------------//
+    Route::get('/managers/lists', 'AdminPanelController@managers')->middleware('verified');
+    Route::get('/managers/{id}/edit', 'AdminPanelController@editmanagers')->middleware('verified');
+    Route::post('/managers/{id}/update', 'AdminPanelController@updatemanagers')->middleware('verified');
+    Route::get('/managers/{id}/delete', 'AdminPanelController@destroymanagers')->middleware('verified');
+
+    //--------Managing Managers------------------------//
+
+    //--------Managing Admins------------------------//
+    Route::get('/lists', 'AdminPanelController@admins')->middleware('verified');
+    Route::get('/{id}/edit', 'AdminPanelController@editadmins')->middleware('verified');
+    Route::post('/{id}/update', 'AdminPanelController@updateadmins')->middleware('verified');
+    Route::get('/{id}/delete', 'AdminPanelController@destroyadmins')->middleware('verified');
+
+    //--------Managing Admins------------------------//
+});
+//--------For ADMIN-------------------------------------------------------------------------------------------------//
+
+
+//--------For Member-------------------------------------------------------------------------------------------------//
 Route::group(['middleware' => 'App\Http\Middleware\MemberMiddleware'], function () {
 });
+//--------For Member-------------------------------------------------------------------------------------------------//
+

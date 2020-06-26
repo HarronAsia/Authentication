@@ -34,13 +34,41 @@
         <div class="user-panel">
             @if (Auth::user()->role == "manager")
             <!-- Status -->
-            <a href="/{{Auth::user()->role}}/event/add"><i class="fa fa-circle text-info"></i> Event</a>
-            @elif (Auth::user()->role == "admin")
+            <a href="/manager/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            @elseif (Auth::user()->role == "admin")
             <!-- Status -->
-            <a href="/{{Auth::user()->role}}/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            <a href="/admin/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            @else
+            
             @endif
         </div>
 
+        <div class="user-panel">
+            @if (Auth::user()->role == "admin")
+            <!-- Status -->
+            <a href="/admin/dashboard"><i class="fa fa-circle text-info"></i> DashBoard</a>
+            @else
+            
+            @endif
+        </div>
+
+        <div class="user-panel">
+            @if (Auth::user()->role == "admin")
+            <!-- Status -->
+            <a href="/admin/users/export"><i class="fa fa-circle text-info"></i> Export Users list</a>
+            @else
+            
+            @endif
+        </div>
+
+        <div class="user-panel">
+            @if (Auth::user()->role == "admin")
+            <!-- Status -->
+            <a href="/admin/dashboard"><i class="fa fa-circle text-info"></i> Export Events List</a>
+            @else
+            
+            @endif
+        </div>
         <!-- Sidebar Menu -->
 
         <ul class="sidebar-menu" data-widget="tree">

@@ -14,7 +14,13 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="/content/{{$event->id}}/store" method="POST" class="px-3" enctype="multipart/form-data">
+                    @if (Auth::user()->role == "manager")
+                    <!-- Add Content -->
+                    <form action="/manager/content/{{$event->id}}/store" method="POST" class="px-3" enctype="multipart/form-data">
+                    @else
+                    <form action="/admin/content/{{$event->id}}/store" method="POST" class="px-3" enctype="multipart/form-data">
+                    @endif
+                        
                             @csrf
                             <div class="form-group">
                                 <input type="text" name="sub_title" class="form-control form-control-lg" placeholder="Enter Title" required>

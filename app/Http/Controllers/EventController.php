@@ -49,19 +49,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-   
+        
         $data = $request->validate( [
             'title' => 'required',
             'detail' => 'required',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required',
         ]);
+        
         $data['user_id'] = Auth::user()->id;
         $events = new Event();
         $events->user_id =   $data['user_id'];
 
         $events->title = $data['title'];
         $events->detail = $data['detail'];
-        
+        $events->status = $data['status'];
         if ($request->hasFile('thumbnail')) {
             
             $events->thumbnail = $request->file('thumbnail');
@@ -76,10 +78,10 @@ class EventController extends Controller
             $events->thumbnail->move($path, $filename);
         }
         $data = $request->except(['thumbnail']);
-        
+
         $data['thumbnail'] = $filename;
         $events->thumbnail = $data['thumbnail'];
-        //dd( $data);
+
         $events->save();
 
         //dd($events->save( $data));
@@ -93,10 +95,14 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $user = User::findOrFail($id);
-        $contents = Content::all();
+    { 
         $event = Event::findOrFail($id);
+        $user = User::findOrFail( $event->user_id);
+
+        //$user = User::all()->where('id','=',$event->user_id);
+    
+        $contents = Content::get()->where('event_id',$event->id);
+      
         return view('events.blogs.index',compact('event','user','contents'));
     }
 
@@ -125,11 +131,12 @@ class EventController extends Controller
             'title' => 'required',
             'detail' => 'required',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required',
         ]);
-        
 
         $events = Event::where('id', '=', $id)->first(); 
-        $user = Event::where('id', '=', $events->user_id)->first();
+        $user = User::where('id', '=', $events->user_id)->first();
+
         $data['user_id'] =  $user->id;
         $old_thumbnail = $events->thumbnail;
         if($request->hasFile('thumbnail'))
@@ -173,7 +180,7 @@ class EventController extends Controller
     {
         $events = Event::findOrFail($id);
         $events->delete();
-        return redirect('/index');
+        return redirect('/');
     }
 
     public function join($id)

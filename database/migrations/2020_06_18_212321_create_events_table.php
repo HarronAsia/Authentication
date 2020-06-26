@@ -20,7 +20,7 @@ class CreateEventsTable extends Migration
             $table->string('title')->unique();
             $table->string('detail')->unique();
 
-
+            $table->string('status')->nullable();
             $table->string('thumbnail')->nullable();
             $table->timestamps();
 
