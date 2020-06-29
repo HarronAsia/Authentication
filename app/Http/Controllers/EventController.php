@@ -71,11 +71,13 @@ class EventController extends Controller
         $this->eventRepo->deleteEvent($id);
         return redirect('/');
     }
-/*
+
+
     public function join($id)
     {
-        $users = User::all();
+        $users = User::get()->where('email_verified_at','!=',NULL);
+
         $event = Event::findOrFail($id);
         return view('events.join_event',compact('users','event'));
-    }*/
+    }
 }

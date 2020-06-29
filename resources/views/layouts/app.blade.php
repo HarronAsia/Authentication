@@ -82,11 +82,17 @@
                                         <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
                                     </p>
                                 </li>
+
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
+                                    @if(Auth::user()->email_verified_at == NULL)
+
+
+                                    @else
                                     <div class="pull-left">
                                         <a href="/profile/{{Auth::user()->id}}" class="btn btn-default btn-flat">Profile</a>
                                     </div>
+                                    @endif
                                     <div class="pull-right">
                                         <a href="{{ url('/logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Sign out
@@ -96,6 +102,7 @@
                                         </form>
                                     </div>
                                 </li>
+
                             </ul>
                         </li>
                     </ul>

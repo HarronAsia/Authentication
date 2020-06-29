@@ -106,6 +106,11 @@ class UserController extends Controller
     //     return Excel::download(new UsersExport, 'users.xlsx');
     // }
 
+    public function confirm()
+    {
+        return view('confirms.confirm_page.blade.php');
+    }
+
 
 
 }

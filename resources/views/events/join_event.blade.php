@@ -29,43 +29,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <!-- Profile Page -->
-
-
-        @if (Auth::user()->role == "manager")
-        <!-- Add Content -->
-        <form action="/manager/event/{{$event->id}}/participate " method="POST" enctype="multipart/form-data">
-        @else
-        <form action="/admin/event/{{$event->id}}/participate " method="POST" enctype="multipart/form-data">
-        @endif
-
-
-                @csrf
-
-                <div class="form-group">
-                    <label for="photo">Your Image</label>
-                    @if (Auth::user()->photo == NULL)
-                    <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
-                    @else
-                    <img src="{{asset('storage/'.Auth::user()->name.'/'.Auth::user()->photo)}}" alt="Image" style="width:200px ;height:200px;">
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <label for="name">Your name</label>
-                    <input class="form-control" name="name" placeholder="Enter Your Name" value={{ Auth::user()->name }}>
-                </div>
-
-                <div class="form-group">
-                    <label for="name">Your Email</label>
-                    <input class="form-control" name="name" placeholder="Enter Your Name" value={{ Auth::user()->email }}>
-                </div>
-
-                <button type="submit" class="btn btn-success">Join Event</button>
-            </form>
-            <!-- Profile Page -->
-    </div>
+    
 
     <div class="row">
         <div class="card-body">

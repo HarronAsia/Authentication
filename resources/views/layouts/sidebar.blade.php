@@ -1,5 +1,5 @@
 <aside class="main-sidebar" id="sidebar-wrapper">
-{{Auth::user()->role}}
+    {{Auth::user()->role}}
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
@@ -25,12 +25,15 @@
             </div>
 
         </div>
-        
+
         <div class="user-panel">
             <!-- Status -->
             <a href="/"><i class="fa fa-circle text-info"></i> Home</a>
         </div>
+        @if(Auth::user()->email_verified_at == NULL)
 
+
+        @else
         <div class="user-panel">
             @if (Auth::user()->role == "manager")
             <!-- Status -->
@@ -39,7 +42,7 @@
             <!-- Status -->
             <a href="/admin/event/add"><i class="fa fa-circle text-info"></i> Add Event</a>
             @else
-            
+
             @endif
         </div>
 
@@ -48,7 +51,7 @@
             <!-- Status -->
             <a href="/admin/dashboard"><i class="fa fa-circle text-info"></i> DashBoard</a>
             @else
-            
+
             @endif
         </div>
 
@@ -57,7 +60,7 @@
             <!-- Status -->
             <a href="/admin/users/export"><i class="fa fa-circle text-info"></i> Export Users list</a>
             @else
-            
+
             @endif
         </div>
 
@@ -66,7 +69,7 @@
             <!-- Status -->
             <a href="/admin/dashboard"><i class="fa fa-circle text-info"></i> Export Events List</a>
             @else
-            
+
             @endif
         </div>
         <!-- Sidebar Menu -->
@@ -75,6 +78,7 @@
             @include('layouts.menu')
         </ul>
         <!-- /.sidebar-menu -->
+        @endif
     </section>
     <!-- /.sidebar -->
 </aside>

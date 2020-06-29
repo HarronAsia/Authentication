@@ -2,7 +2,9 @@
 
 @section('content')
 
-
+@if(Auth::user()->email_verified_at == NULL)
+    <script>window.location = "/email/verify";</script>
+@else
 <div class="container-fluid">
     <div class="row">
 
@@ -35,43 +37,43 @@
                     <tbody>
                         @foreach ($events as $event)
                         @if ($event->status == "private")
-                            @if( Auth::user()->role == "admin")
-                                <td>{{$event->id}}</td>
-                                <td>
-                                    <a href="/content/{{$event->id}}">
-                                        <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image" style="width:200px ;height:200px;">
-                                    </a>
-                                </td>
+                        @if( Auth::user()->role == "admin")
+                        <td>{{$event->id}}</td>
+                        <td>
+                            <a href="/content/{{$event->id}}">
+                                <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image" style="width:200px ;height:200px;">
+                            </a>
+                        </td>
 
-                                <td>
-                                    <div>
-                                        {{$event->title}}
-                                    </div>
-                                </td>
-                                <td>{{$event->detail}}</td>
-                                <td>{{$event->created_at}}</td>
-                                <td>{{$event->updated_at}}</td>
-                                <td>
+                        <td>
+                            <div>
+                                {{$event->title}}
+                            </div>
+                        </td>
+                        <td>{{$event->detail}}</td>
+                        <td>{{$event->created_at}}</td>
+                        <td>{{$event->updated_at}}</td>
+                        <td>
 
-                                    <div class="pull-left">
-                                        <a href="/admin/event/{{$event->id}}/edit">
-                                            <button type="button" class="btn btn-info btn-lg">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                            <div class="pull-left">
+                                <a href="/admin/event/{{$event->id}}/edit">
+                                    <button type="button" class="btn btn-info btn-lg">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </a>
+                            </div>
 
-                                    <div class="pull-right">
-                                        <a href="/admin/event/{{$event->id}}/delete">
-                                            <button type="button" class="btn btn-danger btn-lg">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                            <div class="pull-right">
+                                <a href="/admin/event/{{$event->id}}/delete">
+                                    <button type="button" class="btn btn-danger btn-lg">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </a>
+                            </div>
 
-                                </td>
-                                </tr>
-                            @endif
+                        </td>
+                        </tr>
+                        @endif
                         @else
                         <td>{{$event->id}}</td>
                         <td>
@@ -139,5 +141,5 @@
 
     </div>
 </div>
-
+@endif
 @endsection

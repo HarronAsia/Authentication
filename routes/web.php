@@ -22,12 +22,15 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
+
 Auth::routes(['verify' => true]);
 
-//--------if User -------------------------------------------------------------------------------------------------//
+
+
 Route::get('/', 'EventController@index')->middleware('verified');
 
-//--------if User-------------------------------------------------------------------------------------------------//
+//Route::get('/verify/email', )
 
 Route::get('/content/{id}', 'EventController@show')->middleware('verified');
 

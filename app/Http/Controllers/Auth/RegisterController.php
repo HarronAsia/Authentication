@@ -82,17 +82,5 @@ class RegisterController extends Controller
         return redirect()->back()->with(session()->flash('alert-danger', 'Failed to create! try again later !'));
     }
 
-    public function verifyUser()
-    {
-        $verification_code = \Illuminate\Support\Facades\Request::get('code');
-        $user = User::where(['token' =>$verification_code])->first();
 
-        if($user != NULL)
-        {
-            $user->is_verified =1;
-            $user->save();
-            return redirect()->route('login')->with(session()->flash('alert-success', 'Successfully verified! Feel free to login!'));
-        }
-        return redirect()->route('login')->with(session()->flash('alert-danger', 'Failed to verify! try again later !'));
-    }
 }

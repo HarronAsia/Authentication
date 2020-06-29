@@ -9,7 +9,7 @@
 
                     <div class="box-body">
                         @if (session('resent'))
-                            <div class="alert alert-success" role="alert">A fresh verification link has been sent to
+                            <div class="alert alert-success" role="alert">A  verification link has been sent to
                                 your email address
                             </div>
                         @endif
@@ -18,7 +18,7 @@
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                             @csrf
                             <button type="submit" class="btn btn-link">
-                                click here to request another
+                                click here to verify your account
                             </button>
                         </form>
                     </div>
