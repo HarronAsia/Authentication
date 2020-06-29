@@ -5,44 +5,31 @@ namespace App\Http\Controllers;
 use App\AdminPanel;
 use Illuminate\Http\Request;
 use App\User;
-use App\Event;
-use App\Content;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreAdmin;
+use App\Http\Requests\StoreContent;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
+use App\Repositories\Admin\AdminRepositoryInterface;
 
 class AdminPanelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $adminRepo;
+    public function __construct(AdminRepositoryInterface $adminRepo)
+    {
+        $this->middleware('auth');
+        $this->adminRepo = $adminRepo;
+    }
+
     public function index()
     {
-        //Accounts
-        $users = User::all()->where('role','member')->count();
-        $managers = User::all()->where('role','manager')->count();
-        $admins = User::all()->where('role','admin')->count();
-        //Accounts
+        $users = $this->adminRepo->countAllUsers();
+        $managers = $this->adminRepo->countAllManagers();
+        $admins = $this->adminRepo->countAllAdmins();
+        $managers_events = $this->adminRepo->countAllEventsByManager();
+        $admins_events = $this->adminRepo->countAllEventsByAdmin();
+        $managers_events_contents = $this->adminRepo->countallContentByEventByManager();
+        $admins_events_contents = $this->adminRepo->countallContentByEventByAdmin();
+        
 
-        //Events
-            //Events by Manager
-
-                $managers_events = DB::table('events')->join('users','user_id','=','users.id')->get()->where('role','"manager"')->count();
-            //Events by Admin
-                $admins_events = DB::table('events')->join('users','user_id','=','users.id')->get()->where('role','"admin"')->count();
-
-        //Events
-
-        //Contents
-            //Contents by Events by Manager
-            $managers_events_contents = DB::table('contents')->join('events','event_id','events.id')->join('users','events.user_id','users.id')->get()->where('role','"manager"')->count();
-
-            //Contents by Events by Admin
-            $admins_events_contents = DB::table('contents')->join('events','event_id','events.id')->join('users','events.user_id','users.id')->get()->where('role','"admin"')->count();
-
-        //Contents
         return view('admin.dashboard',compact('users','managers','admins','managers_events','admins_events','managers_events_contents','admins_events_contents'));
     }
 
@@ -114,7 +101,7 @@ class AdminPanelController extends Controller
 //*===============For User=============================*//
     public function users()
     {
-        $users = User::all()->where('role','=','member');
+        $users = $this->adminRepo->getAllUsers();
         return view('admin.lists.users_list',compact('users'));
     }
 
@@ -124,38 +111,9 @@ class AdminPanelController extends Controller
         return view('admin.lists.users.edit_user',compact('user'));
     }
 
-    public function updateusers(Request $request, $id)
+    public function updateusers(StoreAdmin $request, $id)
     {
-        $data = $request->validate( [
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'dob' => 'required',
-            'number' => 'required',
-            'role' => 'required',
-        ]);
-         
-        $user = User::where('id', '=', $id)->first();
-
-        $password = Hash::make($data['password'])  ; 
-        $data['password'] = $password;
-        
-        if ($request->hasFile('photo')) {
-            
-            $file = $request->file('photo');
-
-            $extension = $file->getClientOriginalExtension();
-            $filename =  $user->name . '.' . $extension;
-            
-            $path = storage_path('app/public/' . $user->name . '/');
-
-            //unlink($path.$user->photo);        
-            $file->move($path, $filename);
-        }
-           
-        $data['photo'] = $filename;
-        $user->update($data);
+        $this->adminRepo->editforAdmin($request,$id);
 
         return redirect('/admin/users/lists');
     }
@@ -171,7 +129,7 @@ class AdminPanelController extends Controller
 //*===============For Manager=============================*//
 public function managers()
 {
-    $users = User::all()->where('role','=','manager');
+    $users = $this->adminRepo->getAllManagers();
     return view('admin.lists.managers_lists',compact('users'));
 }
 
@@ -181,38 +139,9 @@ public function editmanagers($id)
     return view('admin.lists.managers.edit_manager',compact('user'));
 }
 
-public function updatemanagers(Request $request, $id)
+public function updatemanagers(StoreAdmin $request, $id)
 {
-    $data = $request->validate( [
-        'name' => 'required',
-        'email' => 'required',
-        'password' => 'required',
-        'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'dob' => 'required',
-        'number' => 'required',
-        'role' => 'required',
-    ]);
-     
-    $user = User::where('id', '=', $id)->first();
-
-    $password = Hash::make($data['password'])  ; 
-    $data['password'] = $password;
-    
-    if ($request->hasFile('photo')) {
-        
-        $file = $request->file('photo');
-
-        $extension = $file->getClientOriginalExtension();
-        $filename =  $user->name . '.' . $extension;
-        
-        $path = storage_path('app/public/' . $user->name . '/');
-
-        //unlink($path.$user->photo);        
-        $file->move($path, $filename);
-    }
-       
-    $data['photo'] = $filename;
-    $user->update($data);
+    $this->adminRepo->editforAdmin($request,$id);
 
     return redirect('/admin/managers/lists');
 }
@@ -228,57 +157,28 @@ public function destroymanagers($id)
 //*===============For Admin=============================*//
 public function admins()
 {
-    $users = User::all()->where('role','=','admin');
-    return view('admin.lists.users_list',compact('users'));
+    $users = $this->adminRepo->getAllAdmins();
+    return view('admin.lists.admins_lists',compact('users'));
 }
 
 public function editadmins($id)
 {
     $user = User::findOrFail($id);
-    return view('admin.lists.users.edit_user',compact('user'));
+    return view('admin.lists.admins.edit_admin',compact('user'));
 }
 
-public function updateadmins(Request $request, $id)
+public function updateadmins(StoreAdmin $request, $id)
 {
-    $data = $request->validate( [
-        'name' => 'required',
-        'email' => 'required',
-        'password' => 'required',
-        'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'dob' => 'required',
-        'number' => 'required',
-        'role' => 'required',
-    ]);
+    $this->adminRepo->editforAdmin($request,$id);
      
-    $user = User::where('id', '=', $id)->first();
-
-    $password = Hash::make($data['password'])  ; 
-    $data['password'] = $password;
-    
-    if ($request->hasFile('photo')) {
-        
-        $file = $request->file('photo');
-
-        $extension = $file->getClientOriginalExtension();
-        $filename =  $user->name . '.' . $extension;
-        
-        $path = storage_path('app/public/' . $user->name . '/');
-
-        //unlink($path.$user->photo);        
-        $file->move($path, $filename);
-    }
-       
-    $data['photo'] = $filename;
-    $user->update($data);
-
-    return redirect('/admin/users/lists');
+    return redirect('/admin/lists');
 }
 
 public function destroyadmins($id)
 {
     $user = User::findOrFail($id);
     $user->delete();
-    return redirect('/admin/users/lists');
+    return redirect('/admin/lists');
 }
 //*===============For Admin=============================*//
 }

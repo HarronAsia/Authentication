@@ -24,8 +24,10 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
-
+//--------if User -------------------------------------------------------------------------------------------------//
 Route::get('/', 'EventController@index')->middleware('verified');
+
+//--------if User-------------------------------------------------------------------------------------------------//
 
 Route::get('/content/{id}', 'EventController@show')->middleware('verified');
 

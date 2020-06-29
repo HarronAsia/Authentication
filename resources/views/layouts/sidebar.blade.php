@@ -34,10 +34,10 @@
         <div class="user-panel">
             @if (Auth::user()->role == "manager")
             <!-- Status -->
-            <a href="/manager/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            <a href="/manager/event/add"><i class="fa fa-circle text-info"></i> Add Event</a>
             @elseif (Auth::user()->role == "admin")
             <!-- Status -->
-            <a href="/admin/event/add"><i class="fa fa-circle text-info"></i> Event</a>
+            <a href="/admin/event/add"><i class="fa fa-circle text-info"></i> Add Event</a>
             @else
             
             @endif

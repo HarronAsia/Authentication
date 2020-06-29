@@ -10,9 +10,9 @@ class Content extends Model
         'sub_title','sub_detail','sub_photo','event_id',
     ];
 
-    public function events()
+    public function event()
     {
-        return $this->belongsToMany(Event::class,'event_contents');
+        return $this->belongsTo(Event::class,'event_contents');
     }
 
 }

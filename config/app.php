@@ -180,6 +180,11 @@ return [
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        /*
+         * Laravel Datatables
+         */
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
     ],
 
     /*
@@ -237,6 +242,10 @@ return [
         'Flash'     => Laracasts\Flash\Flash::class,
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+
+        
 
     ],
 

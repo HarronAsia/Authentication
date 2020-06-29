@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Http\Requests\StoreUser;
+use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Redirect;
+
 //use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
 
-    public function __construct()
+    protected $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
     {
         $this->middleware('auth');
+        $this->userRepo = $userRepo;
     }
 
     /**
@@ -52,8 +58,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return view('profiles.profile')->with('user', $user);
+        $user = $this->userRepo->showUser($id);
+       
+        return view('profiles.profile',compact('user'));
     }
 
     /**
@@ -64,8 +71,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('profiles.edit')->with('user', $user);
+        $user = $this->userRepo->showUser($id);
+        return view('profiles.edit',compact('user'));
     }
 
     /**
@@ -75,40 +82,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreUser $request, $id)
     {
        
-        $this->validate($request, [
-            'name' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'dob' => 'required',
-            'number' => 'required',
-        ]);
-
-        $user = User::where('id', '=', $id)->first();
-        $old_photo = $user->photo;
-
-        if ($request->hasFile('photo')) {
-
-            $file = $request->file('photo');
-
-            $extension = $file->getClientOriginalExtension();
-            $filename =  $user->name . '.' . $extension;
-            $path = storage_path('app/public/' . $user->name . '/');
-
-            if (!file_exists($path . $old_photo)) {
-                $file->move($path, $filename);
-            } else {
-                unlink($path . $old_photo);
-                $file->move($path, $filename);
-            }
-        }
-        $data = $request->except(['photo']);
-        $data['photo'] = $filename;
-
-        $user->update($data);
-
-        return view('profiles.profile', compact('user'));
+        $user = $this->userRepo->updateUser($request, $id);
+        
+        return Redirect('/');
     }
 
     /**
