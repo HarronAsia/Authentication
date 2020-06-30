@@ -29,59 +29,119 @@
         </div>
     </div>
 
-    
-
     <div class="row">
-        <div class="card-body">
-            <div class="table-responsive" id="showBlog">
-                <table class="table table-striped text-center">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
-                        <td>{{$user->id}}</td>
-                        <td>
-                            @if ($user->photo == NULL)
-                            <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
-                            @else
-                            <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="width:200px ;height:200px;">
-                            @endif
-                        </td>
-                        <td>{{$user->name}}</td>
-                        <td>{{$user->email}}</td>
+        <!-- Profile Page -->
+        @if(Auth::user()->role == "manager")
+        <form action="/manager/event/{{$event->id}}/participate" method="POST">
+        @else
+        <form action="/admin/event/{{$event->id}}/participate" method="POST">
+        @endif
+            @csrf
+                <div class="tab-pane container active" id="profile">
 
-                        <td>
-                            <div class="pull-left">
-                                <a href="#">
-                                    <button type="button" class="btn btn-info btn-lg">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </a>
+                    <div class="card-deck">
+                        <div class="card border-primary">
+
+                            <div class="card-header bg-primary text-light text-center lead">
+                                YOUR PROFILE ID || {{Auth::user()->id}}
                             </div>
 
-                            <div class="pull-left">
-                                <a href="#">
-                                    <button type="button" class="btn btn-danger btn-lg">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </a>
+                            <div class="card-body">
+                                <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                                    <b> Your Profile Name : </b> {{Auth::user()->name}}
+                                </p>
+
+                                <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                                    <b> Your Profile Email : </b> {{Auth::user()->email}}
+                                </p>
+
+                                <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                                    <b> Role : </b> {{Auth::user()->role}}
+                                </p>
+
+                                <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                                    <b> Day Of Birth : </b> {{Auth::user()->dob}}
+                                </p>
+
+                                <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                                    <b> Phone Number : </b> {{Auth::user()->number}}
+                                </p>
+
+                                <p class="card-text p-2 m-1 rounded" style="border:1px solid #0275d8;">
+                                    <b> Created On : </b> {{Auth::user()->created_at}}
+                                </p>
+
+
                             </div>
 
-                        </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </div>
 
-            </div>
+                    </div>
+                </div>
+                @if (Auth::user()->join_id == $event->id)
+
+                @else
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-check"></i>&nbsp;&nbsp;Join Event
+                </button>
+                @endif
+            </form>
+
+    </div>
+    <!-- Profile Page -->
+</div>
+
+<div class="row">
+    <div class="card-body">
+        <div class="table-responsive" id="showBlog">
+            <table class="table table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                    <td>{{$user->id}}</td>
+                    <td>
+                        @if ($user->photo == NULL)
+                        <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
+                        @else
+                        <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="width:200px ;height:200px;">
+                        @endif
+                    </td>
+                    <td>{{$user->name}}</td>
+                    <td>{{$user->email}}</td>
+
+                    <td>
+                        <div class="pull-left">
+                            <a href="#">
+                                <button type="button" class="btn btn-info btn-lg">
+                                    <i class="fa fa-info"></i>
+                                </button>&nbsp;&nbsp;
+                            </a>
+                        </div>
+
+                        <div class="pull-left">
+                            <a href="#">
+                                <button type="button" class="btn btn-danger btn-lg">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </a>
+                        </div>
+
+                    </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
         </div>
     </div>
+</div>
 </div>
 
 @endsection

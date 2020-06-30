@@ -8,6 +8,8 @@ use App\Event;
 use App\Http\Requests\StoreEvent;
 use App\Repositories\Event\EventRepositoryInterface;
 
+use Illuminate\Support\Facades\DB;
+
 
 class EventController extends Controller
 {
@@ -75,9 +77,22 @@ class EventController extends Controller
 
     public function join($id)
     {
-        $users = User::get()->where('email_verified_at','!=',NULL);
-
         $event = Event::findOrFail($id);
+        //dd( $event);
+        $users = User::get()->where('join_id','==',$event->id);
+        
+        
+        return view('events.join_event',compact('users','event'));
+    }
+
+    public function after_join($id)
+    {
+       
+        $event =  Event::findOrFail($id);
+        //dd($event);
+        $users = User::get()->where('join_id','==',$event->id);
+        
+        $participant = DB::table('users')->where('id',$id)->update(['join_id' => $event->id]);
         return view('events.join_event',compact('users','event'));
     }
 }

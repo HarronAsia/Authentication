@@ -22,6 +22,7 @@ class CreateEventsTable extends Migration
 
             $table->string('status')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->tinyInteger('count_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

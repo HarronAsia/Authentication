@@ -14,36 +14,44 @@
 
 
             @if( Auth::user()->id == $event->user_id)
-            <p class="lead">
-                by
-                <h2>{{$user->name}}</h2>
+                <p class="lead">
+                    by
+                    <h2>{{$user->name}}</h2>
 
-            </p>
+                </p>
             @else
-            <p class="lead">
-                by
-                <a href="/profile/{{$event->user_id}}">{{$user->name}}</a>
+                <p class="lead">
+                    by
+                    <a href="/profile/{{$event->user_id}}">{{$user->name}}</a>
 
-            </p>
+                </p>
             @endif
 
-
             <hr>
-
             <!-- Date/Time -->
             <p>Posted on {{$event->created_at}}</p>
-                
+
             <hr>
             @if (Auth::user()->role == "member")
 
             @else
+
                 @if (Auth::user()->role == "manager")
-                <a href="/manager/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
+                
+                    @if(Auth::user()->id == $event->user_id)
+
+                    @else
+                        @if (Auth::user()->join_id == $event->id)
+
+                        @else
+                        <a href="/manager/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
+                        @endif                   
+                    @endif
                 @else
                 <a href="/admin/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
                 @endif
-            @endif
 
+            @endif
 
             <!-- Event Image -->
             <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image">
@@ -56,21 +64,17 @@
             @if (Auth::user()->role == "member")
 
             @else
-                
-               
 
-                    @if (Auth::user()->role == "manager")
-                        @if( Auth::user()->id == $event->user_id)
+                @if (Auth::user()->role == "manager")
+                    @if( Auth::user()->id == $event->user_id)
                         <!-- Add Content -->
                         <a href="/manager/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
-                        @else
-                        
-                        @endif
                     @else
-                    <a href="/admin/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
-                    @endif
 
-               
+                    @endif
+                @else
+                <a href="/admin/content/{{$event->id}}/add" class="btn btn-success">Add More Contents</a>
+                @endif
             @endif
 
         </div>
@@ -104,47 +108,47 @@
                         <td>{{$content->created_at}}</td>
                         <td>{{$content->updated_at}}</td>
                         <td>
-                        @if (Auth::user()->role == "member")
+                            @if (Auth::user()->role == "member")
 
-                        @elseif (Auth::user()->role == "manager")
+                            @elseif (Auth::user()->role == "manager")
 
-                            @if(Auth::user()->id == $event->user_id)
-                            <div class="pull-left">
-                                <a href="/manager/content/{{$content->id}}/edit">
-                                    <button type="button" class="btn btn-info btn-lg">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </a>
-                            </div>
+                                @if(Auth::user()->id == $event->user_id)
+                                    <div class="pull-left">
+                                        <a href="/manager/content/{{$content->id}}/edit">
+                                            <button type="button" class="btn btn-info btn-lg">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </a>
+                                    </div>
 
-                            <div class="pull-left">
-                                <a href="/manager/content/{{$content->id}}/delete">
-                                    <button type="button" class="btn btn-danger btn-lg">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </a>
-                            </div>
+                                    <div class="pull-left">
+                                        <a href="/manager/content/{{$content->id}}/delete">
+                                            <button type="button" class="btn btn-danger btn-lg">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                @else
+
+                                @endif
                             @else
+                                <div class="pull-left">
+                                    <a href="/admin/content/{{$content->id}}/edit">
+                                        <button type="button" class="btn btn-info btn-lg">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </a>
+                                </div>
+
+                                <div class="pull-left">
+                                    <a href="/admin/content/{{$content->id}}/delete">
+                                        <button type="button" class="btn btn-danger btn-lg">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </div>
 
                             @endif
-                        @else
-                            <div class="pull-left">
-                                <a href="/admin/content/{{$content->id}}/edit">
-                                    <button type="button" class="btn btn-info btn-lg">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </a>
-                            </div>
-
-                            <div class="pull-left">
-                                <a href="/admin/content/{{$content->id}}/delete">
-                                    <button type="button" class="btn btn-danger btn-lg">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </a>
-                            </div>
-
-                        @endif
                         </td>
                         </tr>
                         @endforeach

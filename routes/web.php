@@ -69,7 +69,7 @@ Route::group([
 
     Route::get('/{id}/join', 'EventController@join')->middleware('verified')->name('eventjoin');
 
-    Route::post('/{id}/participate', 'EventController@participate')->middleware('verified')->name('eventparticipate');
+    Route::post('/{id}/participate', 'EventController@after_join')->middleware('verified')->name('eventparticipate');
 
     //--------Event------------------------//
 });
@@ -114,7 +114,7 @@ Route::group([
 
     Route::get('/{id}/join', 'EventController@join')->middleware('verified')->name('eventjoin');
 
-    Route::post('/{id}/participate', 'EventController@participate')->middleware('verified')->name('eventparticipate');
+    Route::post('/{id}/participate', 'EventController@after_join')->middleware('verified')->name('eventparticipate');
     //--------Event------------------------//
 });
 
