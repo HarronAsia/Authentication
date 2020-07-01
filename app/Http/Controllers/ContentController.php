@@ -34,7 +34,7 @@ class ContentController extends Controller
         $event = Event::findOrFail($id);
         $contents = $this->contentRepo->addContent($request,$event->id);
  
-        return Redirect::action('EventController@show', $event);
+        return  Redirect::action('EventController@show', $event);
     }
 
     public function show(Content $content)
@@ -44,9 +44,10 @@ class ContentController extends Controller
 
     public function edit($id)
     {
+        $event = Event::findOrFail($id);
         $content = Content::findOrFail($id);
         
-        return view('events.blogs.editcontent', compact('content'));
+        return view('events.blogs.editcontent', compact('event','content'));
         
     }
 

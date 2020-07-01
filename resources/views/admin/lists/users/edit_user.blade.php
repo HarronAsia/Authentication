@@ -9,8 +9,14 @@
             @csrf
 
             <div class="form-group">
-                <label for="photo">User Image</label>
-                <input type="file" class="form-control" name="photo" required>
+            <label for="photo">Change User Image</label>
+                <div>
+                    <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="max-width: 500px ; max-height:500px;">
+                    &nbsp;&nbsp;<i class="fa fa-arrow-right" style="font-size:48px;"></i>&nbsp;&nbsp;
+                    <img id="image_preview_container" src="#" alt="preview Content Image" style="max-width: 500px ; max-height:500px;">
+                    
+                    <input type="file" class="form-control" name="photo" id="photo">
+                </div>
             </div>
 
             <div class="form-group">

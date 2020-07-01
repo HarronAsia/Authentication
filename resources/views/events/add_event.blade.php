@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row justify-content-center">
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
 
         <div class="container">
@@ -14,11 +14,11 @@
                     </div>
 
                     <div class="modal-body">
-                        <a href="javascript:history.back()" class="btn btn-primary">Back</a>
+
                         @if(Auth::user()->role == "manager")
                         <form action="/manager/event/create" method="POST" enctype="multipart/form-data">
-                        @else
-                        <form action="/admin/event/create" method="POST" enctype="multipart/form-data">
+                            @else
+                            <form action="/admin/event/create" method="POST" enctype="multipart/form-data">
                                 @endif
 
                                 @csrf
@@ -31,8 +31,21 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="thumbnail">Upload Your Banner image</label>
-                                    <input type="file" class="form-control" name="thumbnail">
+                                    <img id="image_preview_container" src="#" alt="preview Banner" style="max-width: 500px ; max-height:500px;">
+                                    <div>
+                                        <label for="thumbnail">Upload Your Banner image</label>
+                                        <input type="file" class="form-control" name="thumbnail" id="thumbnail">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="event_start">Event Start At</label>
+                                    <input type="date" class="form-control" name="event_start">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="event_end">Event End At</label>
+                                    <input type="date" class="form-control" name="event_end">
                                 </div>
 
                                 <div class="form-group">

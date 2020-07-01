@@ -1,12 +1,14 @@
 <?php
 namespace App\Repositories\Event;
 
+
 use App\Repositories\BaseRepository;
 use App\Http\Requests\StoreEvent;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Event;
-
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class EventRepository extends BaseRepository implements EventRepositoryInterface
 {
@@ -19,7 +21,7 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
     public function getallEvents()
     {
 
-        return $this->model->select('*')->get();
+        return $this->model = DB::table('events')->paginate(2);
 
     }
 
@@ -42,6 +44,9 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
         $this->model->title = $data['title'];
         $this->model->detail = $data['detail'];
         $this->model->status = $data['status'];
+
+        $this->model->event_start = $data['event_start'];
+        $this->model->event_end = $data['event_end'];
         
         if ($request->hasFile('thumbnail')) {
             
@@ -88,7 +93,11 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
             
             $path = storage_path('app/public/event/'.  $data['title'].'/');
 
-            if( !file_exists($path.$old_thumbnail))
+            if(!file_exists($path.$data['thumbnail']))
+            {
+                $data['thumbnail']->move($path,$filename);
+            }
+            else if( !file_exists($path.$old_thumbnail))
             {
                 
                 $data['thumbnail']->move($path,$filename);
@@ -111,6 +120,38 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
     public function deleteEvent($id)
     {
         $this->model = Event::findOrFail($id);
-        $this->model->delete();
+        return $this->model->delete();
     }
+
+    public function get_join_user($id)
+    {
+        return $this->model = User::get()->where('join_id','==',$id);
+    }
+
+    public function showEvent($id)
+    {
+        return $this->model = Event::findOrFail($id);
+    }
+
+    public function update_participant($id)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        return $this->model = DB::table('users')->where('id', $user->id)->update(['join_id' => $id,'join_date' => Carbon::now()]);
+    }
+
+    public function allEvents()
+    {
+        return $this->model = DB::table('events')->join('users','user_id','users.id')->get()->where('role','!=','member');
+    }
+
+    public function count_users($id)
+    {
+        
+        return $numbers = DB::table('users')->get()->where('join_id','=',$id)->count();
+
+        $this->model = DB::table('events')->where('id','=',$id)->update(['count_id' => $numbers]);
+    }
+
+
+
 }

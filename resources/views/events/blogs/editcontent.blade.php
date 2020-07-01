@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <!-- Edit Event Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
@@ -13,10 +12,15 @@
         @endif
             @csrf
 
-            <div class="form-group">
+            <div class="form-group">        
                 <label for="sub_photo">Upload Your Image</label>
-            
-                <input type="file" class="form-control" name="sub_photo">
+                <div>
+                    <img src="{{asset('storage/event/'.$event->title.'/content'.'/'.$content->sub_title.'/'.$content->sub_photo.'/')}}" alt="Image" style="max-width: 500px ; max-height:500px;">
+                    &nbsp;&nbsp;<i class="fa fa-arrow-right" style="font-size:48px;"></i>&nbsp;&nbsp;
+                    <img id="image_preview_container" src="#" alt="preview Content Image" style="max-width: 500px ; max-height:500px;">
+                    
+                    <input type="file" class="form-control" name="sub_photo" id="sub_photo">
+                </div>
             </div>
 
             <div class="form-group">

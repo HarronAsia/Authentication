@@ -16,10 +16,13 @@
         "infyomlabs/laravel-generator": "7.0.x-dev",
         "laravel/framework": "^7.0",
         "laravel/helpers": "^1.2",
+        "laravel/scout": "^8.0",
+        "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1",
         "maatwebsite/excel": "^3.1",
+        "nicolaslopezj/searchable": "^1.13",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

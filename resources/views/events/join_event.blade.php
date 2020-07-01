@@ -3,8 +3,8 @@
 @section('content')
 
 <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row justify-content-center">
         <!-- Post Content Column -->
         <div class="col-lg-8">
 
@@ -29,12 +29,12 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row justify-content-center">
         <!-- Profile Page -->
         @if(Auth::user()->role == "manager")
-        <form action="/manager/event/{{$event->id}}/participate" method="POST">
+        <form action="/manager/event/{{$event->id}}/participate" method="GET">
         @else
-        <form action="/admin/event/{{$event->id}}/participate" method="POST">
+        <form action="/admin/event/{{$event->id}}/participate" method="GET">
         @endif
             @csrf
                 <div class="tab-pane container active" id="profile">
@@ -81,9 +81,17 @@
                 @if (Auth::user()->join_id == $event->id)
 
                 @else
-                <button type="submit" class="btn btn-success">
-                    <i class="fa fa-check"></i>&nbsp;&nbsp;Join Event
-                </button>
+                    @if($event->count_id == 10)
+                        
+                    @else
+                        @if (Auth::user()->id == $event->user_id)
+
+                        @else
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-check"></i>&nbsp;&nbsp;Join Event
+                            </button>
+                        @endif                   
+                    @endif
                 @endif
             </form>
 
@@ -91,7 +99,11 @@
     <!-- Profile Page -->
 </div>
 
-<div class="row">
+<div class="row justify-content-center">
+    <div class="card-header" >
+        <h1> &nbsp;&nbsp;Total Number: {{$numbers}} &nbsp;&nbsp;<i class="fa fa-users"></i></h1>
+        
+    </div>
     <div class="card-body">
         <div class="table-responsive" id="showBlog">
             <table class="table table-striped text-center">

@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUser;
 use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Support\Facades\Redirect;
 
-//use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+use App\Exports\UsersExport;
+use Excel;
 
 class UserController extends Controller
 {
@@ -101,15 +102,20 @@ class UserController extends Controller
         //
     }
 
-    // public function export()
-    // {
-    //     return Excel::download(new UsersExport, 'users.xlsx');
-    // }
-
-    public function confirm()
+    public function all()
     {
-        return view('confirms.confirm_page.blade.php');
+        $users = $this->userRepo->allUsers();
+        return view('admin.export.users.export_users',compact('users'));
     }
+
+    public function export() 
+    {
+        return Excel::download(new UsersExport, 'users_list.csv');
+    }
+    // public function confirm()
+    // {
+    //     return view('confirms.confirm_page.blade.php');
+    // }
 
 
 

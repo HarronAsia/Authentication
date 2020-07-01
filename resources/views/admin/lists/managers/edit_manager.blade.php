@@ -9,37 +9,43 @@
             @csrf
 
             <div class="form-group">
-                <label for="photo">User Image</label>
-                <input type="file" class="form-control" name="photo" required>
+            <label for="photo">Change Manager Image</label>
+                <div>
+                    <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="max-width: 500px ; max-height:500px;">
+                    &nbsp;&nbsp;<i class="fa fa-arrow-right" style="font-size:48px;"></i>&nbsp;&nbsp;
+                    <img id="image_preview_container" src="#" alt="preview Content Image" style="max-width: 500px ; max-height:500px;">
+                    
+                    <input type="file" class="form-control" name="photo" id="photo">
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="name">User name</label>
+                <label for="name">Manager name</label>
                 <input class="form-control" name="name" placeholder="Enter User Name" value="{{ $user->name}}" required>
             </div>
 
             <div class="form-group">
-                <label for="name">User email</label>
+                <label for="name">Manager email</label>
                 <input class="form-control" name="email" placeholder="Enter User Name" value="{{ $user->email}}" required>
             </div>
 
             <div class="form-group">
-                <label for="name">User password</label>
+                <label for="name">Manager password</label>
                 <input class="form-control" name="password" placeholder="Enter User Name" value="{{ $user->password}}" required>
             </div>
 
             <div class="form-group">
-                <label for="dob">User Birthday</label>
+                <label for="dob">Manager Birthday</label>
                 <input type="date" class="form-control" name="dob" placeholder="Enter User DOB" value="{{ $user->dob }}" required>
             </div>
 
             <div class="form-group">
-                <label for="number">User Phone Number</label>
+                <label for="number">Manager Phone Number</label>
                 <input type="tel" class="form-control" name="number" placeholder="Enter User Phone Number" value="{{ $user->number }}" required>
             </div>
 
             <div class="form-group">
-                <label for="role" class="col-md-4 control-label">User Type:</label>
+                <label for="role" class="col-md-4 control-label">Manager Type:</label>
                     <select class="form-control" name="role" id="role">
                         <option value="admin">Admin</option>
                         <option value="manager">Manager</option>

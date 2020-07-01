@@ -181,9 +181,47 @@
     <!-- Datatable  -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.js"></script>
 
+    <!--BootBox -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
 
 
     @stack('scripts')
+    <script type="text/javascript">
+    //Preview Image-----------------------------------------------------------------------//
+        function PreviewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#image_preview_container').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        
+        $("#photo").change(function() {
+            PreviewImage(this);
+        });
+
+        $("#thumbnail").change(function() {
+            PreviewImage(this);
+        });
+
+        $("#sub_photo").change(function() {
+            PreviewImage(this);
+        });
+
+        //Preview Image-----------------------------------------------------------------------//
+
+        $("#editprofile").submit(function(u){
+
+            bootbox.confirm("Do you really want to submit this?", function(result) {
+                u.preventDefault();
+            })
+        })
+    </script>
 </body>
 
 </html>

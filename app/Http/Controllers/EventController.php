@@ -7,9 +7,10 @@ use App\Content;
 use App\Event;
 use App\Http\Requests\StoreEvent;
 use App\Repositories\Event\EventRepositoryInterface;
-
-use Illuminate\Support\Facades\DB;
-
+use App\Exports\EventsExport;
+use App\Imports\EventsImport;
+use Excel ;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -78,21 +79,43 @@ class EventController extends Controller
     public function join($id)
     {
         $event = Event::findOrFail($id);
-        //dd( $event);
-        $users = User::get()->where('join_id','==',$event->id);
         
+        $users =  $this->eventRepo->get_join_user($event->id);;
+        $numbers = $this->eventRepo->count_users($event->id);
         
-        return view('events.join_event',compact('users','event'));
+        return view('events.join_event',compact('users','event','numbers'));
     }
+    
 
     public function after_join($id)
     {
-       
+      
         $event =  Event::findOrFail($id);
-        //dd($event);
-        $users = User::get()->where('join_id','==',$event->id);
+        $users =  $this->eventRepo->get_join_user($event->id);;
+        $numbers = $this->eventRepo->count_users($event->id);
         
-        $participant = DB::table('users')->where('id',$id)->update(['join_id' => $event->id]);
-        return view('events.join_event',compact('users','event'));
+        $participant =$this->eventRepo->update_participant($event->id);
+
+        return view('events.join_event',compact('users','event','numbers'));
     }
+
+    public function all()
+    {
+        $events = $this->eventRepo->allEvents();
+        return view('admin.export.events.export_events',compact('events'));
+    }
+
+    public function export() 
+    {
+        return Excel::download(new EventsExport, 'events_list.csv');
+    }
+
+    public function import(Request $request)
+    {
+        
+        $file = $request->file('excel');
+        Excel::import(new EventsImport,$file);
+
+    }
+
 }

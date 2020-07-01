@@ -30,6 +30,8 @@ class CreateUsersTable extends Migration
             $table->string('role')->nullable();
             
             $table->tinyInteger('join_id')->nullable();
+            $table->date('join_date')->nullable();
+            
             $table->timestamps();
         });
     }

@@ -30,9 +30,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/', 'EventController@index')->middleware('verified');
 
-//Route::get('/verify/email', )
 
-Route::get('/content/{id}', 'EventController@show')->middleware('verified');
+Route::get('/event/{id}', 'EventController@show')->middleware('verified');
 
 
 
@@ -69,7 +68,9 @@ Route::group([
 
     Route::get('/{id}/join', 'EventController@join')->middleware('verified')->name('eventjoin');
 
-    Route::post('/{id}/participate', 'EventController@after_join')->middleware('verified')->name('eventparticipate');
+    Route::get('/{id}/quit', 'EventController@quit')->middleware('verified')->name('eventjoin');
+
+    Route::get('/{id}/participate', 'EventController@after_join')->middleware('verified')->name('eventparticipate');
 
     //--------Event------------------------//
 });
@@ -114,7 +115,9 @@ Route::group([
 
     Route::get('/{id}/join', 'EventController@join')->middleware('verified')->name('eventjoin');
 
-    Route::post('/{id}/participate', 'EventController@after_join')->middleware('verified')->name('eventparticipate');
+    Route::get('/{id}/quit', 'EventController@quit')->middleware('verified')->name('eventjoin');
+
+    Route::get('/{id}/participate', 'EventController@after_join')->middleware('verified')->name('eventparticipate');
     //--------Event------------------------//
 });
 
@@ -144,13 +147,25 @@ Route::group([
 ], function () {
     
     Route::get('/dashboard', 'AdminPanelController@index')->middleware('verified');
+    //--------Export------------------------//
 
+    Route::get('/users/export', 'UserController@all')->middleware('verified');
+    Route::get('/export/users', 'UserController@export')->middleware('verified');
+
+    Route::get('/events/export', 'EventController@all')->middleware('verified');
+    Route::get('/export/events', 'EventController@export')->middleware('verified');
+
+     //--------Export------------------------//
+     Route::post('/import/events', 'EventController@import')->middleware('verified');
+     //--------Import------------------------//
+
+     //--------Import------------------------//
     //--------Managing Users------------------------//
     Route::get('/users/lists', 'AdminPanelController@users')->middleware('verified');
     Route::get('/users/{id}/edit', 'AdminPanelController@editusers')->middleware('verified');
     Route::post('/users/{id}/update', 'AdminPanelController@updateusers')->middleware('verified');
     Route::get('/users/{id}/delete', 'AdminPanelController@destroyusers')->middleware('verified');
-    Route::post('/users/export', 'UserController@export')->middleware('verified');
+    
     //--------Managing Users------------------------//
 
     //--------Managing Managers------------------------//

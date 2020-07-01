@@ -28,6 +28,8 @@ class StoreEvent extends FormRequest
             'detail' => 'required',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required',
+            'event_start' => 'required',
+            'event_end' => 'required'
         ];
     }
 }

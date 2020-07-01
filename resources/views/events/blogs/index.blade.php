@@ -2,8 +2,8 @@
 
 @section('content')
 <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row justify-content-center">
         <!-- Post Content Column -->
         <div class="col-lg-8">
 
@@ -35,22 +35,11 @@
             @if (Auth::user()->role == "member")
 
             @else
-
-                @if (Auth::user()->role == "manager")
-                
-                    @if(Auth::user()->id == $event->user_id)
-
-                    @else
-                        @if (Auth::user()->join_id == $event->id)
-
-                        @else
+                    @if (Auth::user()->role == "manager")
                         <a href="/manager/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
-                        @endif                   
+                    @else     
+                        <a href="/admin/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
                     @endif
-                @else
-                <a href="/admin/event/{{$event->id}}/join" class="btn btn-success">Join Event</a>
-                @endif
-
             @endif
 
             <!-- Event Image -->

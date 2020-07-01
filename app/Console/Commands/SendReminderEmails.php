@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\User;
+use App\Event;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class SendReminderEmails extends Command
 {
@@ -35,18 +39,47 @@ class SendReminderEmails extends Command
      *
      * @return int
      */
-    /*
+
     public function handle()
     {
-        
-        //Get all reminders
-        $reminders = Reminder::query()
-        ->with(['lead'])
-        ->where('reminder_date',now()->format('Y-m-d'))
-        ->where('status','pending')
-        ->get();
 
-        //group by user
+        $users = User::all();
+        $events = Event::all();
+        $reminder_days = Event::where('event_start', '<', Carbon::now()->subDays(3))->get();
 
-    }*/
+        foreach ($users as $user) {
+            foreach ($events as $event) {
+                //If user not a member
+                if ($user->role != "member") {
+                    //If user join id is not null
+                    if ($user->join_id != NULL) {
+                        //If user join id equal to event id
+                        if ($user->join_id == $event->id) {
+                            //If now equal to event date - 3(before 3 days)
+                            if (Carbon::now() == $reminder_days) {
+
+                                Mail::raw("$event->title", function ($message) use ($user) {
+                                    $message->from('xxxxtest123xxxx@gmail.com');
+                                    $message->to($user->email)->subject('Friendly Reminder to join your event ');
+                                });
+                            }
+                            //If user join date equal to event date - 3(before 3 days)
+                        }
+                        //If user join id equal to event id
+                    }
+                    //else user id is null
+                    else {
+                        Mail::raw("Event Reminder", function ($message) use ($user) {
+                            $message->from('xxxxtest123xxxx@gmail.com');
+                            $message->to($user->email)->subject('You should join some event!');
+                        });
+                    }
+                    //If user join id is not null
+                }
+                //If user not a member
+            }
+        }
+
+        $this->info('Successfully Sent !!');
+    }
 }

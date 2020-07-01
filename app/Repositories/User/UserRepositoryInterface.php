@@ -7,4 +7,5 @@ interface UserRepositoryInterface
 
     public function updateUser(StoreUser $request,$id);
     
+    public function allUsers();
 }

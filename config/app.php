@@ -165,6 +165,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -175,15 +178,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * Laravel Excel
-         */
-        Maatwebsite\Excel\ExcelServiceProvider::class,
 
-        /*
-         * Laravel Datatables
-         */
-        Yajra\DataTables\DataTablesServiceProvider::class,
+        
+
+
 
     ],
 
@@ -243,7 +241,7 @@ return [
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         
 

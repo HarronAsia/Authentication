@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row justify-content-center">
     <a href="javascript:history.back()" class="btn btn-primary">Back</a>
 
         <div class="container">
@@ -31,8 +31,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="thumbnail">Upload Your Banner image</label>
-                                <input type="file" class="form-control" name="sub_photo" required>
+                                <img id="image_preview_container" src="#" alt="preview Content Image" style="max-width: 500px ; max-height:500px;">
+                                <div>
+                                    <label for="sub_photo">Upload Your Content image</label>
+                                    <input type="file" class="form-control" name="sub_photo" id="sub_photo" required>
+                                </div>
                             </div>
 
 

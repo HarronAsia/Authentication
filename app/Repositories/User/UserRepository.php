@@ -4,10 +4,8 @@ namespace App\Repositories\User;
 use App\Repositories\BaseRepository;
 use App\Http\Requests\StoreUser;
 
-use App\Content;
-use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Event;
+use Illuminate\Support\Facades\DB;
 
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
@@ -51,8 +49,13 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         
         $data = $request->except(['photo']);
         $data['photo'] = $filename;
-
+        
         return $this->model->update($data);
 
+    }
+
+    public function allUsers()
+    {
+        return $this->model = DB::table('users')->get();
     }
 }

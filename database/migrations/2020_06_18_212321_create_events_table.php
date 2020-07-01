@@ -17,11 +17,14 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
 
-            $table->string('title')->unique();
-            $table->string('detail')->unique();
+            $table->string('title');
+            $table->string('detail');
 
             $table->string('status')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->date('event_start')->nullable();
+            $table->date('event_end')->nullable();
+            
             $table->tinyInteger('count_id')->nullable();
             $table->timestamps();
 

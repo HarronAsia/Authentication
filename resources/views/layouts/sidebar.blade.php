@@ -67,7 +67,7 @@
         <div class="user-panel">
             @if (Auth::user()->role == "admin")
             <!-- Status -->
-            <a href="/admin/dashboard"><i class="fa fa-circle text-info"></i> Export Events List</a>
+            <a href="/admin/events/export"><i class="fa fa-circle text-info"></i> Export Events List</a>
             @else
 
             @endif
