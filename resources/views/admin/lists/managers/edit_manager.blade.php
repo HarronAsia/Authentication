@@ -5,7 +5,7 @@
     <div class="row">
         <!-- Profile Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-        <form action="/admin/managers/{{$user->id}}/update " method="POST" enctype="multipart/form-data">
+        <form action="/admin/manager/{{$user->id}}/confirm " method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">

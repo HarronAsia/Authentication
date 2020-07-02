@@ -23,13 +23,16 @@ class StoreEvent extends FormRequest
      */
     public function rules()
     {
+        //dd(request()->all());
         return [
+            
             'title' => 'required',
             'detail' => 'required',
+
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required',
-            'event_start' => 'required',
-            'event_end' => 'required'
+            'event_start' => 'required|date|date_format:Y-m-d|before:event_end',
+            'event_end' => 'required|date|date_format:Y-m-d|after:event_start'
         ];
     }
 }

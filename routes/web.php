@@ -41,6 +41,8 @@ Route::get('/profile/{id}', 'UserController@show')->middleware('verified')->name
 
 Route::get('/profile/edit/{id}', 'UserController@edit')->middleware('verified')->name('profileedit');
 
+Route::post('/profile/edit/confirm/{id}', 'UserController@confirm')->middleware('verified')->name('profileedit');
+
 Route::post('/profile/update/{id}', 'UserController@update')->middleware('verified')->name('profileupdate');
 
 
@@ -52,17 +54,25 @@ Route::group([
     'middleware' => 'App\Http\Middleware\ManagerMiddleware'
 ], function () {
 
-    
+
 
     //--------Event------------------------//
 
     Route::get('/add', 'EventController@create')->middleware('verified')->name('eventadd');
+
+    //Confirm Add Event    
+    Route::post('/add/confirm', 'EventController@confirmstore')->middleware('verified');
+    //Confirm Add Event
 
     Route::post('/create', 'EventController@store')->middleware('verified')->name('eventcreate');
 
     Route::get('/{id}/edit', 'EventController@edit')->middleware('verified')->name('eventedit');
 
     Route::post('/{id}/update', 'EventController@update')->middleware('verified')->name('eventupdate');
+
+    //Confirm Update Event
+    Route::post('/{id}/update/confirm', 'EventController@confirmupdate')->middleware('verified');
+    //Confirm Update Event
 
     Route::get('/{id}/delete', 'EventController@destroy')->middleware('verified')->name('eventdelete');
 
@@ -83,9 +93,17 @@ Route::group([
 
     Route::get('/{id}/add', 'ContentController@create')->middleware('verified');
 
+    //Confirm Add Event    
+    Route::post('/add/confirm', 'ContentController@confirmstore')->middleware('verified');
+    //Confirm Add Event
+
     Route::post('/{id}/store', 'ContentController@store')->middleware('verified');
 
     Route::get('/{id}/edit', 'ContentController@edit')->middleware('verified');
+
+    //Confirm Update Event
+    Route::post('/{id}/update/confirm', 'ContentController@confirmupdate')->middleware('verified');
+    //Confirm Update Event  
 
     Route::post('/{id}/update', 'ContentController@update')->middleware('verified');
 
@@ -105,11 +123,22 @@ Route::group([
     //--------Event------------------------//
     Route::get('/add', 'EventController@create')->middleware('verified')->name('eventadd');
 
+    //Confirm Add Event
+    Route::post('/add/confirm', 'EventController@confirmadd')->middleware('verified');
+    //Confirm Add Event
+
     Route::post('/create', 'EventController@store')->middleware('verified')->name('eventcreate');
+
 
     Route::get('/{id}/edit', 'EventController@edit')->middleware('verified')->name('eventedit');
 
+    //Confirm Update Event
+    Route::post('/{id}/update/confirm', 'EventController@confirmupdate')->middleware('verified');
+    //Confirm Update Event
+
     Route::post('/{id}/update', 'EventController@update')->middleware('verified')->name('eventupdate');
+
+
 
     Route::get('/{id}/delete', 'EventController@destroy')->middleware('verified')->name('eventdelete');
 
@@ -129,9 +158,17 @@ Route::group([
 
     Route::get('/{id}/add', 'ContentController@create')->middleware('verified');
 
+    //Confirm Add Content
+    Route::post('/{id}/add/confirm', 'ContentController@confirmadd')->middleware('verified');
+    //Confirm Add Content
+
     Route::post('/{id}/store', 'ContentController@store')->middleware('verified');
 
     Route::get('/{id}/edit', 'ContentController@edit')->middleware('verified');
+
+    //Confirm Update Content
+    Route::post('/{id}/update/confirm', 'ContentController@confirmupdate')->middleware('verified');
+    //Confirm Update Content
 
     Route::post('/{id}/update', 'ContentController@update')->middleware('verified');
 
@@ -145,7 +182,7 @@ Route::group([
     'prefix' => 'admin',
     'middleware' => 'App\Http\Middleware\AdminMiddleware'
 ], function () {
-    
+
     Route::get('/dashboard', 'AdminPanelController@index')->middleware('verified');
     //--------Export------------------------//
 
@@ -155,34 +192,40 @@ Route::group([
     Route::get('/events/export', 'EventController@all')->middleware('verified');
     Route::get('/export/events', 'EventController@export')->middleware('verified');
 
-     //--------Export------------------------//
-     Route::post('/import/events', 'EventController@import')->middleware('verified');
-     //--------Import------------------------//
+    //--------Export------------------------//
+    Route::post('/import/events', 'EventController@import')->middleware('verified');
+    //--------Import------------------------//
 
-     //--------Import------------------------//
+    //--------Import------------------------//
+
     //--------Managing Users------------------------//
-    Route::get('/users/lists', 'AdminPanelController@users')->middleware('verified');
-    Route::get('/users/{id}/edit', 'AdminPanelController@editusers')->middleware('verified');
-    Route::post('/users/{id}/update', 'AdminPanelController@updateusers')->middleware('verified');
-    Route::get('/users/{id}/delete', 'AdminPanelController@destroyusers')->middleware('verified');
-    
+    Route::get('/member/lists', 'AdminPanelController@users')->middleware('verified');
+    Route::get('/member/{id}/edit', 'AdminPanelController@editmember')->middleware('verified');
+    Route::post('/member/{id}/confirm', 'AdminPanelController@confirmMember')->middleware('verified');
+    Route::post('/member/{id}/update', 'AdminPanelController@updateusers')->middleware('verified');
+    Route::get('/member/{id}/delete', 'AdminPanelController@destroyusers')->middleware('verified');
+
     //--------Managing Users------------------------//
 
     //--------Managing Managers------------------------//
-    Route::get('/managers/lists', 'AdminPanelController@managers')->middleware('verified');
-    Route::get('/managers/{id}/edit', 'AdminPanelController@editmanagers')->middleware('verified');
-    Route::post('/managers/{id}/update', 'AdminPanelController@updatemanagers')->middleware('verified');
-    Route::get('/managers/{id}/delete', 'AdminPanelController@destroymanagers')->middleware('verified');
+    Route::get('/manager/lists', 'AdminPanelController@managers')->middleware('verified');
+    Route::get('/manager/{id}/edit', 'AdminPanelController@editmanager')->middleware('verified');
+    Route::post('/manager/{id}/confirm', 'AdminPanelController@confirmManager')->middleware('verified');
+    Route::post('/manager/{id}/update', 'AdminPanelController@updatemanagers')->middleware('verified');
+    Route::get('/manager/{id}/delete', 'AdminPanelController@destroymanagers')->middleware('verified');
 
     //--------Managing Managers------------------------//
 
     //--------Managing Admins------------------------//
     Route::get('/lists', 'AdminPanelController@admins')->middleware('verified');
-    Route::get('/{id}/edit', 'AdminPanelController@editadmins')->middleware('verified');
-    Route::post('/{id}/update', 'AdminPanelController@updateadmins')->middleware('verified');
-    Route::get('/{id}/delete', 'AdminPanelController@destroyadmins')->middleware('verified');
+    Route::get('/admin/{id}/edit', 'AdminPanelController@editadmin')->middleware('verified');
+    Route::post('/admin/{id}/confirm', 'AdminPanelController@confirmforAdmin')->middleware('verified');
+    Route::post('/admin/{id}/update', 'AdminPanelController@updateadmins')->middleware('verified');
+    Route::get('/admin/{id}/delete', 'AdminPanelController@destroyadmins')->middleware('verified');
 
     //--------Managing Admins------------------------//
+
+    
 });
 //--------For ADMIN-------------------------------------------------------------------------------------------------//
 
@@ -191,4 +234,3 @@ Route::group([
 Route::group(['middleware' => 'App\Http\Middleware\MemberMiddleware'], function () {
 });
 //--------For Member-------------------------------------------------------------------------------------------------//
-

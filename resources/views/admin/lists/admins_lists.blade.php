@@ -59,7 +59,7 @@
 
                             @else
                             <div class="pull-left">
-                                <a href="/admin/{{$user->id}}/edit">
+                                <a href="/admin/admin/{{$user->id}}/edit">
                                     <button type="button" class="btn btn-info btn-lg">
                                         <i class="fa fa-edit"></i>
                                     </button>
@@ -67,7 +67,7 @@
                             </div>
 
                             <div class="pull-left">
-                                <a href="/admin/{{$user->id}}/delete">
+                                <a href="/admin/admin/{{$user->id}}/delete">
                                     <button type="button" class="btn btn-danger btn-lg">
                                         <i class="fa fa-trash"></i>
                                     </button>

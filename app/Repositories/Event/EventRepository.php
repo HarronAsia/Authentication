@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\Event;
 
 
@@ -8,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Event;
 use Carbon\Carbon;
+
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class EventRepository extends BaseRepository implements EventRepositoryInterface
 {
@@ -22,100 +25,129 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
     {
 
         return $this->model = DB::table('events')->paginate(2);
-
     }
 
     public function addEvent()
     {
 
         return $this->model->all();
-
     }
 
-    public function storeEvent(StoreEvent  $request)
+
+    public function confirmAdd(StoreEvent $request)
     {
         $data = $request->validated();
-        
-        $data['user_id'] = Auth::user()->id;
-        
+
         $this->model = new Event();
-        $this->model->user_id =   $data['user_id'];
 
-        $this->model->title = $data['title'];
-        $this->model->detail = $data['detail'];
-        $this->model->status = $data['status'];
+        $data['user_id'] = Auth::user()->id;
 
-        $this->model->event_start = $data['event_start'];
-        $this->model->event_end = $data['event_end'];
-        
         if ($request->hasFile('thumbnail')) {
-            
+
             $this->model->thumbnail = $request->file('thumbnail');
-            
-            $extension =  $this->model->thumbnail->getClientOriginalExtension();
 
-            $filename = $this->model->title . '.' . $extension;
-
-            $path = storage_path('app/public/event/' . $this->model->title . '/');
-
+            $extension = $this->model->thumbnail->getClientOriginalExtension();
+            $filename = $data['title'] . '.' . $extension;
+            $path = storage_path('app/public/event/' . $data['title'] . '/');
 
             $this->model->thumbnail->move($path, $filename);
         }
-        $data = $request->except(['thumbnail']);
-
         $data['thumbnail'] = $filename;
-        $this->model->thumbnail = $data['thumbnail'];
 
-        return $this->model->save();
+        Session::put('user_id', $data['user_id']);
+        Session::put('title', $data['title']);
+        Session::put('detail', $data['detail']);
+        Session::put('status', $data['status']);
+        Session::put('event_start', $data['event_start']);
+        Session::put('event_end', $data['event_end']);
+        Session::put('thumbnail', $data['thumbnail']);
 
+        return $this->model = Session::all();
     }
 
-    public function updateEvent(StoreEvent  $request,$id)
+
+    public function storeEvent()
+    {
+        $this->model = new Event();
+
+        $this->model->user_id = Session::get('user_id');
+        $this->model->title = Session::get('title');
+        $this->model->detail = Session::get('detail');
+        $this->model->status = Session::get('status');
+        $this->model->event_start = Session::get('event_start');
+        $this->model->event_end  = Session::get('event_end');
+        $this->model->thumbnail  = Session::get('thumbnail');
+
+        return $this->model->save();
+    }
+
+    public function confirmUpdate(StoreEvent $request, $id)
     {
         
         $data = $request->validated();
-       
-        $this->model = Event::where('id', '=', $id)->first(); 
+
+        $this->model = Event::findOrFail($id);
         
-        $user = User::where('id', '=', $this->model->user_id)->first();
+        $data['id'] =    $this->model->id;
         
-        $data['user_id'] =   $user->id;
-        
+        $data['user_id'] =   $this->model->user_id;
+
+        Session::put('id', $data['id']);
+        Session::put('user_id', $data['user_id']);
+        Session::put('title', $data['title']);
+        Session::put('detail', $data['detail']);
+        Session::put('status', $data['status']);
+        Session::put('event_start', $data['event_start']);
+        Session::put('event_end', $data['event_end']);
+
         $old_thumbnail = $this->model->thumbnail;
         
-        if( $request->hasFile('thumbnail'))
-        {
-           
-            $data['thumbnail'] = $request->file('thumbnail');
-           
-            $extension =  $data['thumbnail']->getClientOriginalExtension();
-            $filename =   $data['title']. '.' . $extension;
-            
-            $path = storage_path('app/public/event/'.  $data['title'].'/');
+        if ($request->hasFile('thumbnail')) {
 
-            if(!file_exists($path.$data['thumbnail']))
-            {
-                $data['thumbnail']->move($path,$filename);
-            }
-            else if( !file_exists($path.$old_thumbnail))
-            {
-                
-                $data['thumbnail']->move($path,$filename);
-                
-            }
-            else
-            {
-                
-                unlink($path.$old_thumbnail);
-                $data['thumbnail']->move($path,$filename);
-            }
+            $this->model->thumbnail = $request->file('thumbnail');
             
+            $extension = $this->model->thumbnail->getClientOriginalExtension();
+            $filename =  Session::get('title') . '.' . $extension;
+            
+            $path = storage_path('app/public/event/' . Session::get('title') . '/');
+            
+            if (!file_exists($path . $filename)) {
+                
+                $data['thumbnail']->move($path, $filename);
+                
+            } else if (!file_exists($path . $old_thumbnail)) {
+
+                $data['thumbnail']->move($path, $filename);
+             
+            } else {
+
+                unlink($path . $old_thumbnail);
+                $data['thumbnail']->move($path, $filename);
+               
+            }
         }
-
         $data['thumbnail'] = $filename;
-        
-        return $this->model->update( $data);
+        Session::put('thumbnail', $data['thumbnail']);
+
+        return $this->model = Session::all();
     }
+
+    public function updateEvent($id)
+    {
+        $this->model = Event::findOrFail($id);
+
+       $this->model->user_id = Session::get('user_id');
+       $this->model->title = Session::get('title');
+       $this->model->detail = Session::get('detail');
+       $this->model->status = Session::get('status');
+       $this->model->event_start = Session::get('event_start');
+       $this->model->event_end  = Session::get('event_end');
+       $this->model->thumbnail  = Session::get('thumbnail');
+        
+        return $this->model->update();
+    }
+
+    
 
     public function deleteEvent($id)
     {
@@ -125,7 +157,7 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
     public function get_join_user($id)
     {
-        return $this->model = User::get()->where('join_id','==',$id);
+        return $this->model = User::get()->where('join_id', '==', $id);
     }
 
     public function showEvent($id)
@@ -136,22 +168,19 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
     public function update_participant($id)
     {
         $user = User::findOrFail(Auth::user()->id);
-        return $this->model = DB::table('users')->where('id', $user->id)->update(['join_id' => $id,'join_date' => Carbon::now()]);
+        return $this->model = DB::table('users')->where('id', $user->id)->update(['join_id' => $id, 'join_date' => Carbon::now()]);
     }
 
     public function allEvents()
     {
-        return $this->model = DB::table('events')->join('users','user_id','users.id')->get()->where('role','!=','member');
+        return $this->model = DB::table('events')->join('users', 'user_id', 'users.id')->get()->where('role', '!=', 'member');
     }
 
     public function count_users($id)
     {
-        
-        return $numbers = DB::table('users')->get()->where('join_id','=',$id)->count();
 
-        $this->model = DB::table('events')->where('id','=',$id)->update(['count_id' => $numbers]);
+        return $numbers = DB::table('users')->get()->where('join_id', '=', $id)->count();
+
+        $this->model = DB::table('events')->where('id', '=', $id)->update(['count_id' => $numbers]);
     }
-
-
-
 }

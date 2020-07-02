@@ -29,6 +29,11 @@ interface AdminRepositoryInterface
     //*===============For Admin=============================*//
 
     //*===============Main Edit=============================*//
-    public function editforAdmin(StoreAdmin $request,$id);
+    public function confirmAdmin(StoreAdmin $request, $id);
+    
     //*===============Main Edit=============================*//
+
+    //*===============Main Update=============================*//
+    public function editforAdmin($id);
+    //*===============Main Update=============================*//
 }

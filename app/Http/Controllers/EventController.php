@@ -18,7 +18,6 @@ class EventController extends Controller
 
     public function __construct(EventRepositoryInterface $eventRepo)
     {
-
         $this->eventRepo = $eventRepo;
     }
 
@@ -31,18 +30,55 @@ class EventController extends Controller
 
     public function create()
     {
-        
+      
         $events = $this->eventRepo->addEvent();
      
         return view('events.add_event', compact('events'));
     }
 
-    public function store(StoreEvent $request)
+    //Confirm Add Event---------------------------------------------------------------
+    public function confirmadd(StoreEvent $request)
     {
-        $this->eventRepo->storeEvent($request);
+        
+       $event = $this->eventRepo->confirmadd($request);
+        
+        return view('confirms.event.confirm_add_event',compact('event'));
+    }
+    //Confirm Add Event-------------------------------------------------------------
+
+    public function store()
+    {
+        
+        $this->eventRepo->storeEvent();
         
         return redirect('/');
     }
+
+    public function edit($id)
+    {
+        $event = $this->eventRepo->showEvent($id);
+        
+        return view('events.edit',compact('event'));
+    }
+
+    public function confirmupdate(StoreEvent $request,$id)
+    {
+         $value = Event::findOrFail($id);
+        
+         $event = $this->eventRepo->confirmUpdate($request,$value->id);
+        
+        return view('confirms.event.confirm_edit_event',compact('event'));
+    }
+
+    public function update($id)
+    {
+        $event = Event::findOrFail($id);
+        $this->eventRepo->updateEvent($event->id);
+        
+        return redirect('/');
+    }
+
+   
 
     public function show($id)
     { 
@@ -55,19 +91,7 @@ class EventController extends Controller
         return view('events.blogs.index',compact('event','user','contents'));
     }
 
-    public function edit($id)
-    {
-        $event = $this->eventRepo->showEvent($id);
-        
-        return view('events.edit',compact('event'));
-    }
-
-    public function update(StoreEvent $request, $id)
-    {
-        $this->eventRepo->updateEvent( $request, $id);
-        
-        return redirect('/');
-    }
+    
 
     public function destroy($id)
     {

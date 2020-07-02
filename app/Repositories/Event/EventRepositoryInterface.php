@@ -8,11 +8,17 @@ interface EventRepositoryInterface
 
     public function addEvent();
 
-    public function storeEvent(StoreEvent $request);
+    
+
+    public function confirmAdd(StoreEvent $request);
+
+    public function storeEvent();
 
     public function showEvent($id);
 
-    public function updateEvent(StoreEvent $request,$id);
+    public function confirmUpdate(StoreEvent $request,$id);
+
+    public function updateEvent($id);
 
     public function deleteEvent($id);
 

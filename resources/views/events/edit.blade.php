@@ -6,9 +6,9 @@
         <!-- Edit Event Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
         @if(Auth::user()->role == "manager")
-        <form action="/manager/event/{{$event->id}}/update " method="POST" enctype="multipart/form-data">
+        <form action="/manager/event/{{$event->id}}/update/confirm " method="POST" enctype="multipart/form-data">
             @else
-            <form action="/admin/event/{{$event->id}}/update " method="POST" enctype="multipart/form-data">
+            <form action="/admin/event/{{$event->id}}/update/confirm " method="POST" enctype="multipart/form-data">
                 @endif
                 @csrf
 
@@ -30,6 +30,16 @@
                 <div class="form-group">
                     <label for="detail">Edit Event Detail</label>
                     <input class="form-control" name="detail" placeholder="Enter Your detail" value="{{ $event->detail}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="event_start">Event Start At</label>
+                    <input type="date" class="form-control" name="event_start" value="{{ $event->event_start}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="event_end">Event End At</label>
+                    <input type="date" class="form-control" name="event_end" value="{{ $event->event_end}}">
                 </div>
 
                 <div class="form-group">

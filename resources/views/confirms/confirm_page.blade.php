@@ -3,45 +3,40 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
+        <!-- Profile Page -->
+        <a href="javascript:history.back()" class="btn btn-primary">Back</a>
 
-        <h1>WELCOME {{Auth::user()->name}}</h1>
+        <form action="/profile/update/{{Auth::user()->id}} " method="POST" enctype="multipart/form-data" id="editprofile">
+            @csrf
 
-        <h2>Let's review and confirm your account before using the website</h2>
+            <div class="form-group">
+                <label for="name">User Name</label>
+                <div>{{$user['name']}}</div>
+            </div>
 
-        <h3>Don't worry the information here can only be seen by you !</h3>
+            <div class="form-group">
+                <label for="dob">User Date Of Birth</label>
+                <div>{{$user['dob']}}</div>
+            </div>
 
-        <h4>Confirmation page</h4>
+            <div class="form-group">
+                <label for="number">User Phone Number</label>
+                <div>{{$user['number']}}</div>
+            </div>
 
-        <div>
-            <label for="thumbnail">Your Account Avatar</label>
-            <img src="{{asset('storage/event/'.$event->title.'/'.$event->thumbnail.'/')}}" alt="Image" style="width:200px ;height:200px;">
-            <input type="file" class="form-control" name="thumbnail">
-        </div>
+            <div class="form-group">
+                <div>
+                    <label for="photo">User Avatar</label>
+                    <div>
+                        <img src="{{asset('storage/'.$user['name'].'/'.$user['photo'])}}" alt="preview image" style="max-width: 500px ; max-height:500px;">
+                    </div>
+                </div>
+            </div>
 
-        <div>
-            <label for="name">Your account Name</label>
-            <input class="form-control" name="name" placeholder="Enter Your title" value="{{Auth::user()->name}}">
-        </div>
+            <button type="submit" class="btn btn-default" id="editprofilebtn">Submit</button>
+        </form>
 
-        <div>
-            <label for="email">Your Account Email</label>
-            <input class="form-control" name="email" placeholder="Enter Your detail" value="{{Auth::user()->email}}">
-        </div>
-
-        <div>
-            <label for="email">YourPhone Number</label>
-            <input class="form-control" name="email" placeholder="Enter Your detail" value="{{Auth::user()->number}}">
-        </div>
-
-        <div>
-            <label for="email">Your Date Of Birth</label>
-            <input class="form-control" name="email" placeholder="Enter Your detail" value="{{Auth::user()->dob}}">
-        </div>
-
-        <div>
-            <label for="email">Your Account Role</label>
-            <input class="form-control" name="email" placeholder="Enter Your detail" value="{{Auth::user()->role}}">
-        </div>
+        <!-- Profile Page -->
     </div>
 </div>
 

@@ -26,14 +26,24 @@ class ContentController extends Controller
     {
         $event = $this->contentRepo->editContent($id);
 
-        return view('events.blogs.addcontent',compact('event'));
+        return view('events.blogs.addcontent', compact('event'));
     }
 
-    public function store(StoreContent $request, $id)
+    //Confirm Add Event---------------------------------------------------------------
+    public function confirmadd(StoreContent $request, $id)
     {
         $event = Event::findOrFail($id);
-        $contents = $this->contentRepo->addContent($request,$event->id);
- 
+        $content = $this->contentRepo->confirmadd($request, $event->id);
+        return view('confirms.content.confirm_add_content', compact('content','event'));
+    }
+    //Confirm Add Event-------------------------------------------------------------
+
+    public function store($id)
+    {
+        $event = Event::findOrFail($id);
+        
+        $this->contentRepo->addContent();
+
         return  Redirect::action('EventController@show', $event);
     }
 
@@ -44,22 +54,37 @@ class ContentController extends Controller
 
     public function edit($id)
     {
-        $event = Event::findOrFail($id);
+        
         $content = Content::findOrFail($id);
+        $event = Event::findOrFail($content->event_id);
         
-        return view('events.blogs.editcontent', compact('event','content'));
-        
+        return view('events.blogs.editcontent', compact( 'content','event'));
     }
 
-    public function update(StoreContent $request,$id)
+    //Confirm Add Event---------------------------------------------------------------
+    public function confirmupdate(StoreContent $request, $id)
     {
-        $event = Event::findOrFail($id);
+        $value = Content::findOrFail($id);
+       
+        $event = Event::findOrFail($value->event_id);
         
-        $contents = $this->contentRepo->updateContent($request,$event->id);
+        $content = $this->contentRepo->confirmupdate($request, $value->id);
+       
+        return view('confirms.content.confirm_edit_content', compact('content','event'));
+    }
+    //Confirm Add Event-------------------------------------------------------------
+
+    public function update( $id)
+    {
+        $value = Content::findOrFail($id);
         
+        $event = Event::findOrFail($value->event_id);
+        
+        $this->contentRepo->updateContent($value->id);
+
         return Redirect::action('EventController@show', $event);
     }
-    
+
     public function destroy($id)
     {
 
@@ -67,6 +92,6 @@ class ContentController extends Controller
 
         $event = Event::where('id', '=', $content->event_id)->first();
         $content->delete();
-        return Redirect::action('EventController@show',$event);
+        return Redirect::action('EventController@show', $event);
     }
 }

@@ -25,7 +25,7 @@
                 <table class="table table-striped text-center">
                     <thead>
                         <tr>
-                            <th><a href="/admin/users/lists">Number of Users</a></th>
+                            <th><a href="/admin/member/lists">Number of Users</a></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +54,7 @@
                 <table class="table table-striped text-center">
                     <thead>
                         <tr>
-                        <th><a href="/admin/managers/lists">Number of Managers</a></th>
+                        <th><a href="/admin/manager/lists">Number of Managers</a></th>
                             <th>Number of Events by Managers</th>
                             <th>Number of Contents</th>
                         </tr>

@@ -45,7 +45,7 @@ class SendReminderEmails extends Command
 
         $users = User::all();
         $events = Event::all();
-        $reminder_days = Event::where('event_start', '<', Carbon::now()->subDays(3))->get();
+        $reminder_days = date_format(Carbon::now()->subDays(3),"d");
 
         foreach ($users as $user) {
             foreach ($events as $event) {

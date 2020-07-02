@@ -9,6 +9,8 @@ use App\Http\Requests\StoreAdmin;
 use App\Http\Requests\StoreContent;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\Admin\AdminRepositoryInterface;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class AdminPanelController extends Controller
 {
@@ -28,9 +30,9 @@ class AdminPanelController extends Controller
         $admins_events = $this->adminRepo->countAllEventsByAdmin();
         $managers_events_contents = $this->adminRepo->countallContentByEventByManager();
         $admins_events_contents = $this->adminRepo->countallContentByEventByAdmin();
-        
 
-        return view('admin.dashboard',compact('users','managers','admins','managers_events','admins_events','managers_events_contents','admins_events_contents'));
+
+        return view('admin.dashboard', compact('users', 'managers', 'admins', 'managers_events', 'admins_events', 'managers_events_contents', 'admins_events_contents'));
     }
 
     /**
@@ -62,7 +64,6 @@ class AdminPanelController extends Controller
      */
     public function show(AdminPanel $adminPanel)
     {
-        
     }
 
     /**
@@ -98,22 +99,18 @@ class AdminPanelController extends Controller
     {
         //
     }
-//*===============For User=============================*//
+    //*===============For User=============================*//
     public function users()
     {
         $users = $this->adminRepo->getAllUsers();
-        return view('admin.lists.users_list',compact('users'));
+        return view('admin.lists.users_list', compact('users'));
     }
 
-    public function editusers($id)
+    public function updateusers($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.lists.users.edit_user',compact('user'));
-    }
-
-    public function updateusers(StoreAdmin $request, $id)
-    {
-        $this->adminRepo->editforAdmin($request,$id);
+        dd('member', $user);
+        $this->adminRepo->editforAdmin($user->id);
 
         return redirect('/admin/users/lists');
     }
@@ -124,61 +121,112 @@ class AdminPanelController extends Controller
         $user->delete();
         return redirect('/admin/users/lists');
     }
-//*===============For User=============================*//
+    //*===============For User=============================*//
 
-//*===============For Manager=============================*//
-public function managers()
-{
-    $users = $this->adminRepo->getAllManagers();
-    return view('admin.lists.managers_lists',compact('users'));
-}
+    //*===============For Manager=============================*//
+    public function managers()
+    {
+        $users = $this->adminRepo->getAllManagers();
+        return view('admin.lists.managers_lists', compact('users'));
+    }
 
-public function editmanagers($id)
-{
-    $user = User::findOrFail($id);
-    return view('admin.lists.managers.edit_manager',compact('user'));
-}
+    public function editmanagers($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.lists.managers.edit_manager', compact('user'));
+    }
 
-public function updatemanagers(StoreAdmin $request, $id)
-{
-    $this->adminRepo->editforAdmin($request,$id);
+    public function updatemanagers($id)
+    {
+        $user = User::findOrFail($id);
+        dd( $user);
+        $this->adminRepo->editforAdmin( $user->id);
 
-    return redirect('/admin/managers/lists');
-}
+        return redirect('/admin/manager/lists');
+    }
 
-public function destroymanagers($id)
-{
-    $user = User::findOrFail($id);
-    $user->delete();
-    return redirect('/admin/managers/lists');
-}
-//*===============For Manager=============================*//
+    public function destroymanagers($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect('/admin/manager/lists');
+    }
+    //*===============For Manager=============================*//
 
-//*===============For Admin=============================*//
-public function admins()
-{
-    $users = $this->adminRepo->getAllAdmins();
-    return view('admin.lists.admins_lists',compact('users'));
-}
+    //*===============For Admin=============================*//
+    public function admins()
+    {
+        $users = $this->adminRepo->getAllAdmins();
+        return view('admin.lists.admins_lists', compact('users'));
+    }
 
-public function editadmins($id)
-{
-    $user = User::findOrFail($id);
-    return view('admin.lists.admins.edit_admin',compact('user'));
-}
+    public function editadmins($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.lists.admins.edit_admin', compact('user'));
+    }
 
-public function updateadmins(StoreAdmin $request, $id)
-{
-    $this->adminRepo->editforAdmin($request,$id);
-     
-    return redirect('/admin/lists');
-}
+    public function updateadmins($id)
+    {
+        $user = User::findOrFail($id);
+        //dd('admin',$user);
+        $this->adminRepo->editforAdmin($user->id);
 
-public function destroyadmins($id)
-{
-    $user = User::findOrFail($id);
-    $user->delete();
-    return redirect('/admin/lists');
-}
-//*===============For Admin=============================*//
+        return redirect('/admin/lists');
+    }
+
+    public function destroyadmins($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect('/admin/lists');
+    }
+    //*===============For Admin=============================*//
+
+    //*===============For edit=============================*//
+    public function editadmin($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.lists.admins.edit_admin', compact('user'));
+    }
+    public function editmanager($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.lists.managers.edit_manager', compact('user'));
+    }
+    public function editmember($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.lists.users.edit_user', compact('user'));
+    }
+    //*===============For edit=============================*//
+
+    //*===============For cofirm=============================*//
+    public function confirmforAdmin(StoreAdmin $request, $id)
+    {
+        $value = User::findOrFail($id);
+
+        $user = $this->adminRepo->confirmAdmin($request, $value->id);
+
+        return view('confirms.admin.edit', compact('user'));
+    }
+
+    public function confirmManager(StoreAdmin $request, $id)
+    {
+        $value = User::findOrFail($id);
+
+        $user = $this->adminRepo->confirmAdmin($request, $value->id);
+
+        return view('confirms.admin.editmanager', compact('user'));
+    }
+
+    public function confirmMember(StoreAdmin $request, $id)
+    {
+        $value = User::findOrFail($id);
+
+        $user = $this->adminRepo->confirmAdmin($request, $value->id);
+
+        return view('confirms.admin.edituser', compact('user'));
+    }
+    //*===============For cofirm=============================*//
 }

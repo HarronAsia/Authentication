@@ -20,16 +20,18 @@
                 <p>{{ Auth::user()->name}}</p>
                 @endif
                 <!-- Status -->
+                
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
 
             </div>
-
+            <hr>
         </div>
-
+        <hr>
         <div class="user-panel">
             <!-- Status -->
             <a href="/"><i class="fa fa-circle text-info"></i> Home</a>
         </div>
+        <hr>
         @if(Auth::user()->email_verified_at == NULL)
 
 
@@ -45,7 +47,7 @@
 
             @endif
         </div>
-
+        <hr>
         <div class="user-panel">
             @if (Auth::user()->role == "admin")
             <!-- Status -->
@@ -54,7 +56,7 @@
 
             @endif
         </div>
-
+        <hr>
         <div class="user-panel">
             @if (Auth::user()->role == "admin")
             <!-- Status -->
@@ -63,7 +65,7 @@
 
             @endif
         </div>
-
+        <hr>
         <div class="user-panel">
             @if (Auth::user()->role == "admin")
             <!-- Status -->
@@ -73,7 +75,7 @@
             @endif
         </div>
         <!-- Sidebar Menu -->
-
+        <hr>
         <ul class="sidebar-menu" data-widget="tree">
             @include('layouts.menu')
         </ul>

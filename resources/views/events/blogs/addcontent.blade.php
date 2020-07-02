@@ -16,9 +16,9 @@
                     <div class="modal-body">
                     @if (Auth::user()->role == "manager")
                     <!-- Add Content -->
-                    <form action="/manager/content/{{$event->id}}/store" method="POST" class="px-3" enctype="multipart/form-data">
+                    <form action="/manager/content/{{$event->id}}/add/confirm" method="POST" class="px-3" enctype="multipart/form-data">
                     @else
-                    <form action="/admin/content/{{$event->id}}/store" method="POST" class="px-3" enctype="multipart/form-data">
+                    <form action="/admin/content/{{$event->id}}/add/confirm" method="POST" class="px-3" enctype="multipart/form-data">
                     @endif
                         
                             @csrf

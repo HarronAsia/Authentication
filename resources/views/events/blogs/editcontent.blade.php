@@ -6,9 +6,9 @@
         <!-- Edit Event Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
         @if(Auth::user()->role == "manager")
-        <form action="/manager/content/{{$content->id}}/update" method="POST" enctype="multipart/form-data">
+        <form action="/manager/content/{{$content->id}}/update/confirm" method="POST" enctype="multipart/form-data">
         @else
-        <form action="/admin/content/{{$content->id}}/update" method="POST" enctype="multipart/form-data">
+        <form action="/admin/content/{{$content->id}}/update/confirm" method="POST" enctype="multipart/form-data">
         @endif
             @csrf
 

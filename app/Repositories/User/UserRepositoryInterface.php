@@ -5,7 +5,9 @@ interface UserRepositoryInterface
 {
     public function showUser($id);
 
-    public function updateUser(StoreUser $request,$id);
+    public function confirmUsers(StoreUser $request,$id);
+    
+    public function updateUser($id);
     
     public function allUsers();
 }

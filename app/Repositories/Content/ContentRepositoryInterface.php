@@ -6,8 +6,13 @@ interface ContentRepositoryInterface
 
     public function editContent($id);
 
-    public function addContent(StoreContent $request, $id);
+    public function confirmadd(StoreContent $request, $id);
 
-    public function updateContent(StoreContent $request, $id);
+    public function addContent();
+
+    public function confirmupdate(StoreContent $request, $id);
+
+    public function updateContent($id);
+
 
 }

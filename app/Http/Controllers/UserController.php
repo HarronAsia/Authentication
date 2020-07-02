@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreUser;
 use App\Repositories\User\UserRepositoryInterface;
 
-use Illuminate\Support\Facades\DB;
+use App\User;
 use App\Exports\UsersExport;
 use Excel;
 
@@ -76,6 +76,15 @@ class UserController extends Controller
         return view('profiles.edit',compact('user'));
     }
 
+    public function confirm(StoreUser $request,$id)
+    {
+        $value = User::findOrFail($id);
+        
+        $user = $this->userRepo->confirmUsers($request,$value->id);
+        
+        return view('confirms.confirm_page',compact('user'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -83,12 +92,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreUser $request, $id)
+    public function update($id)
     {
        
-        $user = $this->userRepo->updateUser($request, $id);
+        $user = User::findOrFail($id);
         
-        return Redirect('/');
+        $this->userRepo->updateUser($user->id);
+        
+        return redirect('/');
     }
 
     /**
@@ -112,10 +123,7 @@ class UserController extends Controller
     {
         return Excel::download(new UsersExport, 'users_list.csv');
     }
-    // public function confirm()
-    // {
-    //     return view('confirms.confirm_page.blade.php');
-    // }
+     
 
 
 

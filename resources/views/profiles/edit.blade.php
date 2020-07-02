@@ -5,7 +5,8 @@
     <div class="row">
         <!-- Profile Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-        <form action="/profile/update/{{Auth::user()->id}} " method="POST" enctype="multipart/form-data" id="editprofile">
+        
+        <form action="/profile/edit/confirm/{{Auth::user()->id}} " method="POST" enctype="multipart/form-data" id="editprofile">
             @csrf
 
             <div class="form-group">

@@ -16,9 +16,9 @@
                     <div class="modal-body">
 
                         @if(Auth::user()->role == "manager")
-                        <form action="/manager/event/create" method="POST" enctype="multipart/form-data">
+                        <form action="/manager/event/add/confirm" method="POST" enctype="multipart/form-data">
                             @else
-                            <form action="/admin/event/create" method="POST" enctype="multipart/form-data">
+                            <form action="/admin/event/add/confirm" method="POST" enctype="multipart/form-data">
                                 @endif
 
                                 @csrf
@@ -27,7 +27,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea name="detail" class="form-control form-control-lg" placeholder="Enter Detail" required></textarea>
+                                    <input type="text" name="detail" class="form-control form-control-lg" placeholder="Enter Detail" required>
                                 </div>
 
                                 <div class="form-group">
