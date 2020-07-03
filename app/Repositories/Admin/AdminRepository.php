@@ -86,7 +86,7 @@ class AdminRepository extends BaseRepository implements AdminRepositoryInterface
     {
         $data = $request->validated();
         //dd($data);
-        $this->model = User::findOrFail($id);
+        $this->model = User::where('id', '=', $id)->first();
         
         Session::put('id', $this->model->id);
         Session::put('name', $data['name']);
@@ -119,8 +119,8 @@ class AdminRepository extends BaseRepository implements AdminRepositoryInterface
 
     public function editforAdmin($id)
     {
-        $this->model = User::findOrFail($id);
-        dd($this->model);
+        $this->model = User::where('id', '=', $id)->first();
+        
         $this->model->id = Session::get('id');
         $this->model->name = Session::get('name');
         $this->model->email = Session::get('email');
@@ -128,9 +128,10 @@ class AdminRepository extends BaseRepository implements AdminRepositoryInterface
         $this->model->dob = Session::get('dob');
         $this->model->photo = Session::get('photo');
         $this->model->number = Session::get('number');
+        $this->model->role = Session::get('role');
         $this->model->created_at = Session::get('created_at');
         $this->model->updated_at = Session::get('updated_at');
-
+        
 
         return $this->model->update();
     }

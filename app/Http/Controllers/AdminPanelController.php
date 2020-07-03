@@ -106,20 +106,35 @@ class AdminPanelController extends Controller
         return view('admin.lists.users_list', compact('users'));
     }
 
+    public function editmember($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.lists.users.edit_user', compact('user'));
+    }
+
+    public function confirmMember(StoreAdmin $request, $id)
+    {
+        $value = User::findOrFail($id);
+
+        $user = $this->adminRepo->confirmAdmin($request, $value->id);
+
+        return view('confirms.admin.edituser', compact('user'));
+    }
+
     public function updateusers($id)
     {
         $user = User::findOrFail($id);
-        dd('member', $user);
+        //dd('member', $user);$this->adminRepo->editforAdmin($user->id);
         $this->adminRepo->editforAdmin($user->id);
 
-        return redirect('/admin/users/lists');
+        return redirect('/admin/member/lists');
     }
 
     public function destroyusers($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect('/admin/users/lists');
+        return redirect('/admin/member/lists');
     }
     //*===============For User=============================*//
 
@@ -130,17 +145,25 @@ class AdminPanelController extends Controller
         return view('admin.lists.managers_lists', compact('users'));
     }
 
-    public function editmanagers($id)
+    public function editmanager($id)
     {
         $user = User::findOrFail($id);
         return view('admin.lists.managers.edit_manager', compact('user'));
     }
 
+    public function confirmManager(StoreAdmin $request, $id)
+    {
+        $value = User::findOrFail($id);
+
+        $user = $this->adminRepo->confirmAdmin($request, $value->id);
+
+        return view('confirms.admin.editmanager', compact('user'));
+    }
+
     public function updatemanagers($id)
     {
         $user = User::findOrFail($id);
-        dd( $user);
-        $this->adminRepo->editforAdmin( $user->id);
+        $this->adminRepo->editforAdmin($user->id);
 
         return redirect('/admin/manager/lists');
     }
@@ -160,10 +183,19 @@ class AdminPanelController extends Controller
         return view('admin.lists.admins_lists', compact('users'));
     }
 
-    public function editadmins($id)
+    public function editadmin($id)
     {
         $user = User::findOrFail($id);
         return view('admin.lists.admins.edit_admin', compact('user'));
+    }
+
+    public function confirmforAdmin(StoreAdmin $request, $id)
+    {
+        $value = User::findOrFail($id);
+
+        $user = $this->adminRepo->confirmAdmin($request, $value->id);
+
+        return view('confirms.admin.edit', compact('user'));
     }
 
     public function updateadmins($id)
@@ -181,52 +213,4 @@ class AdminPanelController extends Controller
         $user->delete();
         return redirect('/admin/lists');
     }
-    //*===============For Admin=============================*//
-
-    //*===============For edit=============================*//
-    public function editadmin($id)
-    {
-        $user = User::findOrFail($id);
-        return view('admin.lists.admins.edit_admin', compact('user'));
-    }
-    public function editmanager($id)
-    {
-        $user = User::findOrFail($id);
-        return view('admin.lists.managers.edit_manager', compact('user'));
-    }
-    public function editmember($id)
-    {
-        $user = User::findOrFail($id);
-        return view('admin.lists.users.edit_user', compact('user'));
-    }
-    //*===============For edit=============================*//
-
-    //*===============For cofirm=============================*//
-    public function confirmforAdmin(StoreAdmin $request, $id)
-    {
-        $value = User::findOrFail($id);
-
-        $user = $this->adminRepo->confirmAdmin($request, $value->id);
-
-        return view('confirms.admin.edit', compact('user'));
-    }
-
-    public function confirmManager(StoreAdmin $request, $id)
-    {
-        $value = User::findOrFail($id);
-
-        $user = $this->adminRepo->confirmAdmin($request, $value->id);
-
-        return view('confirms.admin.editmanager', compact('user'));
-    }
-
-    public function confirmMember(StoreAdmin $request, $id)
-    {
-        $value = User::findOrFail($id);
-
-        $user = $this->adminRepo->confirmAdmin($request, $value->id);
-
-        return view('confirms.admin.edituser', compact('user'));
-    }
-    //*===============For cofirm=============================*//
 }

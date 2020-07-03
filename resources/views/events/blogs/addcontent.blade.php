@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="form-group">
-                                <img id="image_preview_container" src="#" alt="preview Content Image" style="max-width: 500px ; max-height:500px;">
+                            <img id="image_preview_container" src="https://lh3.googleusercontent.com/proxy/h_jSrzd_LTroD-A82cpQNw5WJuZ9ibHb85B4EJV7o3IV59vRCF0l8qnOmu1y0iAvV_SIZfJQ_2xNH0YJubL7uFK-pa0ktFsb5O9MuY0utqFwjo1UGzEej48u" alt="preview Banner" style="max-width: 500px ; max-height:500px;">
                                 <div>
                                     <label for="sub_photo">Upload Your Content image</label>
                                     <input type="file" class="form-control" name="sub_photo" id="sub_photo" required>

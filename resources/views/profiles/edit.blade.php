@@ -5,11 +5,17 @@
     <div class="row">
         <!-- Profile Page -->
         <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-        
+
         <form action="/profile/edit/confirm/{{Auth::user()->id}} " method="POST" enctype="multipart/form-data" id="editprofile">
             @csrf
 
             <div class="form-group">
+                @if ($user->photo == NULL)
+                <img src="{{asset('storage/default.png')}}" alt="Image" style="width:200px ;height:200px;">
+                @else
+                <img src="{{asset('storage/'.$user->name.'/'.$user->photo)}}" alt="Image" style="width:200px ;height:200px;">
+                @endif
+                &nbsp;&nbsp;<i class="fa fa-arrow-right" style="font-size:48px;"></i>&nbsp;&nbsp;
                 <img id="image_preview_container" src="#" alt="preview image" style="max-width: 500px ; max-height:500px;">
                 <div>
                     <label for="photo">Your Image</label>
@@ -41,7 +47,3 @@
 </div>
 
 @endsection
-
-
-
-
