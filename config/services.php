@@ -29,5 +29,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'google' => [
+        'client_id'     => env('713601280069-cti5mtdbin8ovr0727ajftppu1hl2eu1.apps.googleusercontent.com'),
+        'client_secret' => env('uzpVi0yTZYOFGZv1tbcUCLyU'),
+        'redirect'      => env('http://training3.harron.com:80/auth/google/callback')
+    ],
 
 ];

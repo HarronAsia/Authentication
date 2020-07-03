@@ -8,8 +8,6 @@ interface EventRepositoryInterface
 
     public function addEvent();
 
-    
-
     public function confirmAdd(StoreEvent $request);
 
     public function storeEvent();

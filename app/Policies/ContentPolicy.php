@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Content;
+use App\Event;
 use Illuminate\Auth\Access\HandlesAuthorization;
-
-class UserPolicy
+use Illuminate\Auth\Access\Response;
+class ContentPolicy
 {
     use HandlesAuthorization;
 
@@ -18,4 +19,6 @@ class UserPolicy
     {
         //
     }
+
+    
 }

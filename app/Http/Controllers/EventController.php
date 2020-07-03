@@ -10,6 +10,7 @@ use App\Repositories\Event\EventRepositoryInterface;
 use App\Exports\EventsExport;
 use App\Imports\EventsImport;
 use Excel ;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -22,9 +23,9 @@ class EventController extends Controller
     }
 
     public function index()
-    {
-
+    {    
        $events = $this->eventRepo->getallEvents();
+        
         return view('home',compact('events'));
     }
 

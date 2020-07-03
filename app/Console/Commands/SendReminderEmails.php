@@ -45,25 +45,23 @@ class SendReminderEmails extends Command
 
         $users = User::all();
         $events = Event::all();
-        $reminder_days = date_format(Carbon::now()->subDays(3),"d");
-
+        
         foreach ($users as $user) {
             foreach ($events as $event) {
+                
                 //If user not a member
                 if ($user->role != "member") {
                     //If user join id is not null
                     if ($user->join_id != NULL) {
                         //If user join id equal to event id
                         if ($user->join_id == $event->id) {
-                            //If now equal to event date - 3(before 3 days)
-                            if (Carbon::now() == $reminder_days) {
+                            
+                            $subj = 'Friendly Reminder to join your event which is '.$event->title.' And i should remind you that the event will start at '.$event->event_start;
+                            Mail::raw("Friendly Reminder", function ($message) use ($user, $subj) {
+                                $message->from('xxxxtest123xxxx@gmail.com');
+                                $message->to($user->email)->subject($subj);
+                            });
 
-                                Mail::raw("$event->title", function ($message) use ($user) {
-                                    $message->from('xxxxtest123xxxx@gmail.com');
-                                    $message->to($user->email)->subject('Friendly Reminder to join your event ');
-                                });
-                            }
-                            //If user join date equal to event date - 3(before 3 days)
                         }
                         //If user join id equal to event id
                     }

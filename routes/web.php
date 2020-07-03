@@ -21,7 +21,8 @@ Auth::routes();
 Route::get('/', function () {
     return view('auth.login');
 });
-
+Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');
+Route::get('auth/google/callback', 'Auth\GoogleController@handleGoogleCallback');
 
 
 Auth::routes(['verify' => true]);
@@ -61,7 +62,7 @@ Route::group([
     Route::get('/add', 'EventController@create')->middleware('verified')->name('eventadd');
 
     //Confirm Add Event    
-    Route::post('/add/confirm', 'EventController@confirmstore')->middleware('verified');
+    Route::post('/add/confirm', 'EventController@confirmadd')->middleware('verified');
     //Confirm Add Event
 
     Route::post('/create', 'EventController@store')->middleware('verified')->name('eventcreate');
@@ -94,7 +95,7 @@ Route::group([
     Route::get('/{id}/add', 'ContentController@create')->middleware('verified');
 
     //Confirm Add Event    
-    Route::post('/add/confirm', 'ContentController@confirmstore')->middleware('verified');
+    Route::post('/{id}/add/confirm', 'ContentController@confirmadd')->middleware('verified');
     //Confirm Add Event
 
     Route::post('/{id}/store', 'ContentController@store')->middleware('verified');

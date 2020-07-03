@@ -3,7 +3,9 @@
 @section('content')
 
 @if(Auth::user()->email_verified_at == NULL)
-    <script>window.location = "/email/verify";</script>
+<script>
+    window.location = "/email/verify";
+</script>
 @else
 <div class="container-fluid">
     <div class="row">
@@ -36,9 +38,9 @@
                     </thead>
                     <tbody>
                         @foreach ($events as $event)
-  
+
                         @if ($event->status == "private")
-                            @if( Auth::user()->role == "admin")
+                        @if( Auth::user()->role == "admin")
                         <tr>
                             <td>{{$event->id}}</td>
                             <td>
@@ -75,7 +77,7 @@
 
                             </td>
                         </tr>
-                            @endif
+                        @endif
                         @else
                         <tr>
                             <td>{{$event->id}}</td>
@@ -95,39 +97,54 @@
                             <td>{{$event->updated_at}}</td>
                             <td>
                                 @if( Auth::user()->role == "manager")
-                                    @if( Auth::user()->id == $event->user_id)
-                                    <div class="pull-left">
-                                        <a href="/manager/event/{{$event->id}}/edit">
-                                            <button type="button" class="btn btn-info btn-lg">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                                
 
-                                    <div class="pull-right">
-                                        <a href="/manager/event/{{$event->id}}/delete">
-                                            <button type="button" class="btn btn-danger btn-lg">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    @endif
+                                @can('update', $event)
+                                <div class="pull-left">
+                                    <a href="/manager/event/{{$event->id}}/edit">
+                                        <button type="button" class="btn btn-info btn-lg">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                                @endcan
+
+                                @cannot('update', $event)
+                                
+                                @endcannot
+
+                                @can('delete', $event)
+                                <div class="pull-right">
+                                    <a href="/manager/event/{{$event->id}}/delete">
+                                        <button type="button" class="btn btn-danger btn-lg">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                                @endcan
+
+                                @cannot('delete', $event)
+                                
+                                @endcannot
+
+                                
+                                
                                 @elseif ( Auth::user()->role == "admin")
-                                    <div class="pull-left">
-                                        <a href="/admin/event/{{$event->id}}/edit">
-                                            <button type="button" class="btn btn-info btn-lg">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                                <div class="pull-left">
+                                    <a href="/admin/event/{{$event->id}}/edit">
+                                        <button type="button" class="btn btn-info btn-lg">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </a>
+                                </div>
 
-                                    <div class="pull-right">
-                                        <a href="/admin/event/{{$event->id}}/delete">
-                                            <button type="button" class="btn btn-danger btn-lg">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                                <div class="pull-right">
+                                    <a href="/admin/event/{{$event->id}}/delete">
+                                        <button type="button" class="btn btn-danger btn-lg">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </div>
                                 @else
 
                                 @endif

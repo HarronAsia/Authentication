@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,91 +26,101 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/square/_all.css">
 
 </head>
+
 <body class="hold-transition login-page">
-<div class="login-box">
-    <div class="login-logo">
-       <b>Harron the Intern </b>Login Page
-    </div>
+    <div class="login-box">
+        <div class="login-logo">
+            <b>Harron the Intern </b>Login Page
+        </div>
 
-    <div class="flash-message">
-        @foreach(['warming','info','success','danger'] as $msg)
+        <div class="flash-message">
+            @foreach(['warming','info','success','danger'] as $msg)
             @if(Session::has('alert-'.$msg))
-                <p class="alert alert-{{$msg}}">
-                    {{Session::get('alert-'.$msg)}}
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                </p>
+            <p class="alert alert-{{$msg}}">
+                {{Session::get('alert-'.$msg)}}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </p>
             @endif
-        @endforeach
-    </div>
-    
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <p class="login-box-msg">Login to your Website</p>
+            @endforeach
+        </div>
 
-        <form method="post" action="{{ url('/login') }}">
-            @csrf
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Login to your Website</p>
 
-            <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <form method="post" action="{{ url('/login') }}">
+                @csrf
 
-                @if ($errors->has('email'))
+                <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
+                    <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+                    @if ($errors->has('email'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
 
-                @endif
-            </div>
+                    @endif
+                </div>
 
-            <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
-                <input type="password" class="form-control" placeholder="Password" name="password">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                @if ($errors->has('password'))
+                <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
+                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    @if ($errors->has('password'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-                @endif
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                    @endif
 
-            </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox" name="remember"> Remember Me
-                        </label>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox" name="remember"> Remember Me
+                            </label>
+                        </div>
                     </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+            </form>
+
+            <br><br><a href="{{ url('/password/reset') }}">Click here to get back your password!!!</a><br><br>
+            <a href="{{ url('/register') }}" class="text-center">Click here to create a new account!!!</a>
+
+            <div class="form-group">
+                <div class="col-md-8">
+
+                    <a class="btn btn-link" href="{{ URL::to('auth/google') }}">
+                        <i class="fa fa-google-plus-square" aria-hidden="true"></i> Đăng nhập bằng Google
+                    </a>
                 </div>
-                <!-- /.col -->
             </div>
-        </form>
-
-        <br><br><a href="{{ url('/password/reset') }}">Click here to get back your password!!!</a><br><br>
-        <a href="{{ url('/register') }}" class="text-center">Click here to create a new account!!!</a>
-
+        </div>
+        <!-- /.login-box-body -->
     </div>
-    <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
+    <!-- /.login-box -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<!-- AdminLTE App -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.3/js/adminlte.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.3/js/adminlte.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
-<script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script>
+        $(function() {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
